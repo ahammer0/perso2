@@ -4,9 +4,7 @@ import Link from "next/link";
 export default function Page() {
   return (
     <>
-      <Link href="/">Accueil</Link>
-      <h1>formulaire d' ajout de cartes</h1>
-      <NewProjectForm />
+      <h2>Accueil de la page admin</h2>
     </>
   );
 }

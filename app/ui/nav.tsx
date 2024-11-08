@@ -19,11 +19,12 @@ const navLinksData = [
 
 export default function Nav() {
   return (
-    <div className="h-20 text-3xl w-full sticky">
+    <div className="h-20 text-xl w-full sticky">
       <nav className="w-4/5 flex items-center justify-between mx-auto h-full">
         <Logo />
         <div>
           <NavLink href="#">Github</NavLink>
+          <NavLink href="/admin">Admin</NavLink>
         </div>
         <NavLinks />
       </nav>
@@ -33,7 +34,7 @@ export default function Nav() {
 
 function Logo() {
   return (
-    <div className="m-4 flex items-center justify-center">
+    <Link className="m-4 flex items-center justify-center" href="/">
       <Image
         className="m-2"
         src={logo}
@@ -42,34 +43,38 @@ function Logo() {
         alt="balise html"
       />
       <h1 className="m-4 text-white">Axel Schwindenhammer</h1>
-    </div>
+    </Link>
   );
 }
 
 function NavLinks() {
   return (
     <div className="flex flex-row items-center">
-      {navLinksData.map((el: any, id: any): any => 
-        el.isEm?(
-        <Button href={el.href} key={id}>
-          {el.name}
-        </Button>
-        ):(
-
-        <ButtonOutline href={el.href} key={id}>
-          {el.name}
-        </ButtonOutline>
+      {navLinksData.map((el: any, id: any): any =>
+        el.isEm ? (
+          <Button href={el.href} key={id}>
+            {el.name}
+          </Button>
+        ) : (
+          <ButtonOutline href={el.href} key={id}>
+            {el.name}
+          </ButtonOutline>
         )
       )}
     </div>
   );
 }
 
-function NavLink({ children , href}: { children: React.ReactNode, href:string}) {
+function NavLink({
+  children,
+  href,
+}: {
+  children: React.ReactNode;
+  href: string;
+}) {
   return (
     <Link className="text-zinc-500 m-2" href={href}>
       {children}
     </Link>
   );
 }
-
