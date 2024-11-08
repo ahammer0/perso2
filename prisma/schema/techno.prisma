@@ -1,0 +1,10 @@
+model Techno {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique 
+  picture     Media   @relation(fields:[pictureId], references:[id])
+  pictureId   Int
+  url         String
+  isPublished Boolean
+  projects    Project[]
+}
+

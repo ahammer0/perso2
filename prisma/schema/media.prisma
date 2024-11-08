@@ -1,0 +1,13 @@
+model Media {
+  id        Int         @id @default(autoincrement())
+  fileName  String      @unique
+  alt       String
+  type      MediaType   @default(picture)
+  technos   Techno[]
+  projects  Project[]
+}
+enum MediaType {
+  picture
+  icon
+  profile
+}

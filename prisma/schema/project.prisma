@@ -1,0 +1,12 @@
+model Project {
+  id            Int       @id @default(autoincrement())
+  name          String      
+  picture       Media     @relation(fields: [pictureId], references:[id])    
+  pictureId     Int
+  createdAt     DateTime  @default(now())  
+  description   String    
+  url           String?    
+  technosUsed   Techno[]
+  isPublished   Boolean
+}
+
