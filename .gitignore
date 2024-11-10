@@ -1,4 +1,4 @@
 .next/
 node_modules/
 *.swp
-public/assets/uploads/
+public/uploads/
