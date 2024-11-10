@@ -30,10 +30,10 @@ export default async function Page() {
       <table className="border border-collapse">
         <thead>
           <tr>
-            <th>Nom</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Action</th>
+            <th className="text-left">Nom</th>
+            <th className="text-left">Email</th>
+            <th className="text-left">Role</th>
+            <th className="text-left">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -42,9 +42,10 @@ export default async function Page() {
               <td className="border p-2">{el.name}</td>
               <td className="border p-2">{el.email}</td>
               <td className="border p-2">{el.role}</td>
-              <td className="border p-2">
+              <td className="border p-2 p-1">
                 <Link href={`/admin/user/${el.id}`}>Détails</Link>
                 <DeleteButton id={el.id} />
+                <Link href={`/admin/user/${el.id}/edit`}>Éditer</Link>
               </td>
             </tr>
           ))}

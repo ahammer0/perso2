@@ -1,45 +1,6 @@
-import {redirect} from 'next/navigation'
-import {revalidatePath} from 'next/cache'
-import {PrismaClient} from '@prisma/client'
-import bcrypt from 'bcryptjs'
+import {handleAddUser} from '../actions.tsx'
 
 export default function AddPage(){
-  async function handleAddUser(formData:FormData){
-    "use server"
-    const rawFormData = {
-      name:formData.get('name'),
-      email:formData.get('email'),
-      password:formData.get('password'),
-      role:formData.get('role')
-    }
-    console.log('rawdata',rawFormData)
-    
-    const prisma = new PrismaClient()
-    let redirectPath:String | null = null
-    try{
-      const user = {
-        name:rawFormData.name.toString(),
-        email:rawFormData.email.toString(),
-        password : await bcrypt.hash(rawFormData.password.toString(),10),
-        role:rawFormData.role
-      }
-      const newUser = await prisma.user.create({data:user})
-
-      console.log('newuser',newUser)
-
-      redirectPath = `/admin/user/${newUser.id}`
-
-    }catch(e){
-      console.error(e)
-      redirectPath = "/admin/user/add"
-    }finally{
-      prisma.$disconnect
-      revalidatePath('/admin/user')
-      redirect(redirectPath)
-    }
-
-
-  }
   return (<>
     <form action={handleAddUser} className="flex flex-col text-black">
       <div className="flex flex-col">
