@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import fs from "fs/promises";
 import sharp from "sharp";
 import {redirect} from 'next/navigation'
+import { revalidatePath } from "next/cache";
 
 const uploadsDirPath = process.cwd() + "/public/uploads/";
 
@@ -63,4 +64,28 @@ export async function addMedia(mediaForm: FormData) {
   })
   prisma.$disconnect
   redirect(`/admin/media/${newMedia.id}`)
+}
+
+export async function deleteMedia(id:Number){
+  const prisma = new PrismaClient()
+  const media = await prisma.media.findUnique({
+    where:{id:id},
+    select:{fileName:true},
+  })
+  await prisma.media.delete({where:{id:id}})
+  await fs.unlink(uploadsDirPath+media.fileName)
+  revalidatePath('/admin/media') 
+  prisma.$disconnect
+}
+
+export async function editMedia(id:Number,mediaForm:FormData){
+  const prisma = new PrismaClient()
+  await prisma.media.update({
+    where:{id:id},
+    data:{
+      alt:mediaForm.get('alt'),
+      type:mediaForm.get('type')
+    },
+  })
+  redirect(`/admin/media/${id}`)
 }

@@ -1,6 +1,8 @@
 import { getMedias } from "./actions.tsx";
 import Link from "next/link";
 import Image from "next/image";
+import DeleteButton from './ui/deleteButton.tsx'
+
 export default async function Page() {
   const medias = await getMedias();
   return (
@@ -34,6 +36,7 @@ export default async function Page() {
               <td className="border p-2">{el.type}</td>
               <td className="border p-2 p-1">
                 <Link href={`/admin/media/${el.id}`}>Détails</Link>
+                <DeleteButton id={el.id}/>
                 <Link href={`/admin/media/${el.id}/edit`}>Éditer</Link>
               </td>
             </tr>

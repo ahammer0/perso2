@@ -13,5 +13,6 @@ export default async function ShowMedia({
   <p>id reçu :{params.id}</p>
   <Image src={`/uploads/${media.fileName}`} alt={media.alt} height="500" width="500"/>
   <p>AltText: {media.alt}</p>
+  <p>Type: {media.type}</p>
   </>
 }
