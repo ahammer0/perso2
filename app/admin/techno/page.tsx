@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import DeleteButton from "./ui/deleteButton.tsx";
-import { getTechnos } from "./actions.tsx";
+import DeleteButton from "./ui/deleteButton";
+import { getTechnos } from "./actions";
 
 export default async function Page() {
   const technos = await getTechnos();

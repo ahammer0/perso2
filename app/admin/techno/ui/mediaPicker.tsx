@@ -1,10 +1,17 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-// import { Prisma } from "@prisma/client";
-import { getMedias } from "../../media/actions.tsx";
+import { Prisma } from "@prisma/client";
 
-export default function MediaPicker({ medias, name, defaultValue=0}: { name: String, defaultValue:Number }) {
+export default function MediaPicker({
+  medias,
+  name,
+  defaultValue = 0,
+}: {
+  name: string;
+  medias: Prisma.MediaGetPayload<{}>[];
+  defaultValue?: number;
+}) {
   console.log(medias);
   const [selectedImg, setSelectedImg] = useState(defaultValue);
 
@@ -23,7 +30,7 @@ export default function MediaPicker({ medias, name, defaultValue=0}: { name: Str
           />
         ))}
       </div>
-      <input type="hidden" value={selectedImg} name={name} />
+      <input type="hidden" value={selectedImg} name={name} readOnly/>
     </>
   );
 }

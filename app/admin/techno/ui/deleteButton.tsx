@@ -1,7 +1,7 @@
 "use client"
-import {deletetechno} from '../actions.tsx'
+import { deleteTechno } from "../actions"
 
-export default function DeleteButton(id:Number){
+export default function DeleteButton({id}:{id:number}){
   return <>
     <button onClick={()=>deleteTechno(id)}>Supprimer</button>
   </>

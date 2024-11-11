@@ -4,12 +4,13 @@ import fs from "fs/promises";
 import sharp from "sharp";
 import {redirect} from 'next/navigation'
 import { revalidatePath } from "next/cache";
+import { Prisma } from "@prisma/client";
 
 const uploadsDirPath = process.cwd() + "/public/uploads/";
 
 export async function getMedias() {
   const prisma = new PrismaClient();
-  let medias = null;
+  let medias:Prisma.MediaGetPayload<{}>[]= [];
   try {
     medias = await prisma.media.findMany({});
   } catch (e) {
@@ -20,7 +21,7 @@ export async function getMedias() {
   }
 }
 
-export async function getMedia(id:Number) {
+export async function getMedia(id:number) {
   const prisma = new PrismaClient();
   let media = null;
   try {
@@ -35,8 +36,11 @@ export async function getMedia(id:Number) {
 
 export async function addMedia(mediaForm: FormData) {
   console.log(mediaForm);
-  const file = mediaForm.get("file");
+  const file:File = mediaForm.get("file");
   //check file type
+  if (!file){
+    throw new Error('no file provided')
+  }
   if (!file.type.startsWith("image")) {
     throw new Error("wrong filetype");
   }
@@ -45,7 +49,7 @@ export async function addMedia(mediaForm: FormData) {
   let buffer = Buffer.from(arrayBuffer);
   //convert to webp and resize
   buffer = await sharp(buffer)
-    .resize({height:200,width:200})
+    .resize({height:200,width:200,fit:'contain',background:{r:0,g:0,b:0,alpha:0}})
     .webp()
     .toBuffer()
 
