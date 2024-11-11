@@ -1,4 +1,6 @@
-import {addMedia} from '../actions.tsx'
+import {addMedia} from '../actions'
+import PasteFileInput from '../ui/pasteFileInput'
+
 export default function MediaAdd(){
   return <>
   <h2>Ajout d'utilisateur</h2>
@@ -9,7 +11,8 @@ export default function MediaAdd(){
     </div>
     <div className="flex flex-col">
       <label htmlFor="file">Fichier</label>
-      <input type="file" name="file" required/>
+      {/* <input type="file" name="file" required/> */}
+      <PasteFileInput name="file"/>
     </div>
     <div className="flex flex-col">
       <label htmlFor="type"></label>

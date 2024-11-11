@@ -1,67 +1,29 @@
-import { PrismaClient } from "@prisma/client";
+import { addProject } from "../actions";
+import MediaPicker from "../../techno/ui/mediaPicker";
+import { getMedias } from "../../media/actions";
+import { getTechnos } from "../../techno/actions";
+import TechnoPicker from "../ui/technoPicker";
 
-export default function addForm() {
-  async function createProject(formData: FormData) {
-    "use server";
-
-    const rawFormData = {
-      name: formData.get("name"),
-      pictureId: formData.get("pictureId"),
-      description: formData.get("description"),
-      url: formData.get("url"),
-      technosUsed: formData.get("technosUsed"),
-      isPublished: formData.get("isPublished"),
-    };
-
-    console.log(rawFormData);
-
-    const prisma = new PrismaClient();
-    try {
-      //build technos array
-      const technos = JSON.parse(rawFormData.technosUsed).map((el) => {
-        return { id: parseInt(el) };
-      });
-      //persisit new project in database
-      const project = await prisma.project.create({
-        data: {
-          name: rawFormData.name,
-          picture: rawFormData.pictureId!==''?{
-            connect:{id:parseInt(rawFormData.pitcureId)}
-          }:null,
-          description: rawFormData.description.toString(),
-          url: rawFormData.url.toString(),
-          technosUsed: {
-            connect: technos,
-          },
-          isPublished: rawFormData.isPublished==='on',
-        },
-      });
-      console.log('nouveau projet',project)
-    } catch (e) {
-      console.error("createProject server action");
-      console.error(e);
-    } finally {
-      await prisma.$disconnect;
-    }
-  }
+export default async function addForm() {
+  const medias = await getMedias()
+  const technos = await getTechnos()
 
   return (
     <>
-      <form action={createProject} className="flex flex-col text-black">
+      <form action={addProject} className="flex flex-col text-black">
         <div className="flex flex-col">
           <label htmlFor="name">Nom du projet</label>
           <input type="text" name="name" required/>
         </div>
 
         <div className="flex flex-col">
-          {/* TODO remplir ce champ avec l'id de l' image choisie */}
-          <label htmlFor="pictureId">Id de l' image</label>
-          <input type="text" name="pictureId" value="" />
+          <label htmlFor="pictureId">Image du projet</label>
+          <MediaPicker name="pictureId" medias={medias}/>
         </div>
 
         <div className="flex flex-col">
           <label htmlFor="description">Description du projet</label>
-          <textarea name="description" cols="30" rows="10" required></textarea>
+          <textarea name="description" cols={30} rows={10} required></textarea>
         </div>
 
         <div className="flex flex-col">
@@ -70,9 +32,8 @@ export default function addForm() {
         </div>
 
         <div className="flex flex-col">
-          {/* TODO remplir ce champ avec un tableau */}
           <label htmlFor="technosUsed">Technos utilisées</label>
-          <input type="text" name="technosUsed" value="[]" />
+          <TechnoPicker technos={technos} name="technosUsed"/>
         </div>
 
         <div className="flex flex-col">

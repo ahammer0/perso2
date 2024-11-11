@@ -34,8 +34,8 @@ export async function addTechno(technoForm: FormData) {
       isPublished: technoForm.get("isPublished") === "on",
     },
   });
-  redirect(`/admin/techno/${newTechno.id}`);
   prisma.$disconnect;
+  redirect(`/admin/techno/${newTechno.id}`);
 }
 
 export async function editTechno(id: Number, technoForm: FormData) {
@@ -51,12 +51,13 @@ export async function editTechno(id: Number, technoForm: FormData) {
       isPublished: technoForm.get("isPublished") === "on",
     },
   });
-  redirect(`/admin/techno/${id}`);
   prisma.$disconnect;
+  redirect(`/admin/techno/${id}`);
 }
 
-export async function deleteTechno(id: Number) {
+export async function deleteTechno(id: number) {
   const prisma = new PrismaClient();
   await prisma.techno.delete({ where: { id: id } });
+  revalidatePath('/admin/techno')
   prisma.$disconnect;
 }
