@@ -1,45 +1,35 @@
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import { twMerge } from "tailwind-merge";
 
-export function Button({
-  children,
-  className,
-  href,
-}: {
+interface ButtonProps extends LinkProps {
   children: React.ReactNode;
   className?: string;
-  href:string;
-}) {
+}
+
+export function Button({ children, className, ...props }: ButtonProps) {
   return (
     <Link
       className={twMerge(
-        "bg-indigo-500 text-white p-2 px-4 rounded-md m-2 hover:text-slate-800 hover:shadow-inner shadow-slate-700 shadow transition-all",
-        className
+        "bg-indigo-500 text-white p-2 px-4 rounded-md m-2 hover:text-slate-800 hover:shadow-inner hover:scale-[1.02] hover:brightness-110 shadow-slate-700 transition-all shadow-md",
+        className,
       )}
-      href={href}
+      {...props}
     >
       {children}
     </Link>
   );
 }
-export function ButtonOutline({
-  children,
-  className,
-  href,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  href:string;
-}) {
+
+export function ButtonOutline({ children, className, ...props }: ButtonProps) {
   return (
-    <Link
+    <Button
       className={twMerge(
-        "bg-transparent border-zinc-700 border-2 border text-white p-2 px-4 rounded-md m-2 transition-all",
-        className
+        "bg-transparent hover:text-white border-zinc-700 border-2",
+        className,
       )}
-      href={href}
+      {...props}
     >
       {children}
-    </Link>
+    </Button>
   );
 }

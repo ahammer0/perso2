@@ -5,10 +5,12 @@ import SoftSkills from "@/app/ui/softskills";
 export default function Home() {
   return (
     <>
-      <Profile/>
-      <CardsWrapper />
+      <Profile />
+      <div className="p-4">
+        <CardsWrapper />
+      </div>
       {/* cv experiences */}
-      <SoftSkills/>
+      <SoftSkills />
     </>
   );
 }

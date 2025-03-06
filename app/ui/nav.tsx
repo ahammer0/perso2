@@ -24,7 +24,9 @@ export default function Nav() {
         <Logo />
         <div>
           <NavLink href="#">Github</NavLink>
-          <NavLink href="/admin">Admin</NavLink>
+          <span className="hidden md:block">
+            <NavLink href="/admin">Admin</NavLink>
+          </span>
         </div>
         <NavLinks />
       </nav>
@@ -49,7 +51,7 @@ function Logo() {
 
 function NavLinks() {
   return (
-    <div className="flex flex-row items-center">
+    <div className="flex-row items-center hidden md:flex">
       {navLinksData.map((el: any, id: any): any =>
         el.isEm ? (
           <Button href={el.href} key={id}>
@@ -59,7 +61,7 @@ function NavLinks() {
           <ButtonOutline href={el.href} key={id}>
             {el.name}
           </ButtonOutline>
-        )
+        ),
       )}
     </div>
   );

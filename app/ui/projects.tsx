@@ -2,6 +2,12 @@ import { PrismaClient } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { Prisma } from "@prisma/client";
+import Tree from "./tree/Tree";
+
+// TODO: image cliquable qui donne sur un page détails
+//    TODO: ajouter un slug aux projects
+//    TODO: rendre les images cliquable
+//    TODO: créer une page détails avec le slug en param
 
 export default async function CardsWrapper() {
   async function fetchLastProjects() {
@@ -25,32 +31,16 @@ export default async function CardsWrapper() {
   }
 
   const projects = await fetchLastProjects();
+
   if (projects === null) {
     return;
   }
 
+  const nodes = projects.map((project) => <Card project={project} />);
+
   return (
-    <section className="container mx-auto flex flex-col container m-4 mb-16 items-center">
-      <div className="group m-0 p-0 flex flex-row w-full items-stretch justify-center">
-        <h1 className="mr-[32rem] border-grayLight shadow shadow-purple p-4 px-8 rounded-lg text-center text-5xl font-bold text-white bg-indigo-500">
-          Projects
-        </h1>
-      </div>
-      {projects.map((project, index: number) => {
-        return (
-          <div className="group m-0 p-0 flex flex-row w-full items-stretch justify-center">
-            <div className="relative w-64">
-              {/* barre verticale */}
-              <div className="absolute shadow-indigo-500 shadow-lg left-[calc(50%-10px)] top-0 w-[20px] h-full group-last:h-1/2 bg-gradient-to-r from-black via-grayMedium to-black"></div>
-              {/* barre horiz */}
-              <div className="absolute shadow-indigo-500 shadow w-1/2 h-[20px] top-[calc(50%-10px)] right-0 bg-grayMedium bg-gradient-to-b from-black via-grayMedium to-black"></div>
-              {/* rond */}
-              <div className="absolute shadow-indigo-500 shadow left-[calc(50%-25px)] top-[calc(50%-25px)] w-[50px] aspect-square rounded-full bg-grayMedium bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] to-black from-grayMedium"></div>
-            </div>
-            <Card key={index} project={project} />
-          </div>
-        );
-      })}
+    <section className="container mx-auto m-4 mb-16 max-w-[700px]">
+      <Tree title="Projects" nodes={nodes} />
     </section>
   );
 }
@@ -62,33 +52,40 @@ function Card({
   }>;
 }) {
   return (
-    <div className="flex flex-col h-64 shadow shadow-indigo-500 border-grayMedium border rounded my-4 p-2 w-2/5 text-white text-lg font-bold overflow-hidden">
-      <div className="flex flex-row grow">
-        <Image
-          src={`/uploads/${project.picture.fileName}`}
-          alt={project.picture.alt}
-          height={250}
-          width={200}
-          className="object-contain shrink"
-        />
-        <div className="grow flex flex-col justify-between">
-          <h3>{project.name}</h3>
-          <p>{project.description}</p>
-          {project.url && <Link href={project.url} className="align-end">Lien vers le site</Link>}
+    <>
+      <div className="flex flex-col">
+        <h3 className="text-center mb-2 text-xl">{project.name}</h3>
+        <div className="flex flex-col md:flex-row">
+          <Image
+            src={`/uploads/${project.picture.fileName}`}
+            alt={project.picture.alt}
+            height={250}
+            width={200}
+            className="object-contain object-top self-center px-2"
+          />
+          <div className="grow flex flex-col justify-between mb-2">
+            <p className="text-base font-normal">{project.description}</p>
+            {project.url && (
+              <Link href={project.url} className="self-end underline">
+                Lien vers le site
+              </Link>
+            )}
+          </div>
         </div>
       </div>
-      {/* liste des technos */} 
+      {/* liste des technos */}
       <div className="flex flex-row flex-wrap justify-center">
-        {project.technosUsed.map((techno)=>(
+        {project.technosUsed.map((techno) => (
           <Link href={techno.url}>
-            <Image src={`/uploads/${techno.picture.fileName}`}
+            <Image
+              src={`/uploads/${techno.picture.fileName}`}
               alt={techno.picture.alt}
               height={40}
               width={40}
-              />
+            />
           </Link>
-          ))}
+        ))}
       </div>
-    </div>
+    </>
   );
 }
