@@ -29,7 +29,7 @@ export default async function SoftSkills() {
   const technos = await getUnusedTechnos();
 
   return (
-    <section className=" p-4 pb-6">
+    <section className="p-4 pb-6 text-slate-900">
       <article className="mt-4">
         <H2 className="text-center text-slate-900 mb-4">More about myself</H2>
         <p>
