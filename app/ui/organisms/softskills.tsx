@@ -1,8 +1,35 @@
+import { PrismaClient } from "@prisma/client";
+import { GetTechno } from "@/types/techno";
 import { H2, H3 } from "../atoms/headers";
-
+import TechnoCard from "../molecules/TechnoCard";
+//
 //TODO: display techs with cards& images
 //
-export default function SoftSkills() {
+async function getUnusedTechnos() {
+  const prisma = new PrismaClient();
+  let technos: GetTechno[] = [];
+  try {
+    technos = await prisma.techno.findMany({
+      where: {
+        isPublished: true,
+        projects: {
+          none: {},
+        },
+      },
+      include: {
+        picture: true,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+  } finally {
+    prisma.$disconnect();
+    return technos;
+  }
+}
+export default async function SoftSkills() {
+  const technos = await getUnusedTechnos();
+
   return (
     <section className=" p-4 pb-6">
       <article className="mt-4">
@@ -22,14 +49,12 @@ export default function SoftSkills() {
         <H3 className="text-center text-slate-900 mb-4">
           Also playing with...
         </H3>
-        <ul className="flex flex-wrap justify-center gap-4">
-          <li>Python</li>
-          <li>Flask</li>
-          <li>Rust</li>
-          <li>HTMX</li>
-          <li>Alpine.js</li>
-          <li>Arduino</li>
-          <li>RaspberryPi</li>
+        <ul className="flex flex-wrap justify-center gap-2">
+          {technos.map((techno) => (
+            <li key={techno.name} className="">
+              <TechnoCard techno={techno} />
+            </li>
+          ))}
         </ul>
       </article>
     </section>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Prisma } from "@prisma/client";
 import Tree from "../molecules/tree/Tree";
+import TechnoCard from "../molecules/TechnoCard";
 
 // TODO: image cliquable qui donne sur un page détails
 //    TODO: ajouter un slug aux projects
@@ -17,6 +18,7 @@ export default async function CardsWrapper() {
       projects = await prisma.project.findMany({
         orderBy: [{ id: "desc" }],
         take: 3,
+        where: { isPublished: true },
         include: {
           picture: true,
           technosUsed: { include: { picture: true } },
@@ -81,17 +83,9 @@ function Card({
         </div>
       </div>
       {/* liste des technos */}
-      <div className="flex flex-row flex-wrap justify-center gap-1">
-        {project.technosUsed.map((techno) => (
-          <Link href={techno.url}>
-            <Image
-              src={`/uploads/${techno.picture.fileName}`}
-              alt={techno.picture.alt}
-              height={40}
-              width={40}
-              className="rounded bg-white"
-            />
-          </Link>
+      <div className="flex flex-row flex-wrap justify-center gap-2">
+        {project.technosUsed.map((tech) => (
+          <TechnoCard techno={tech} key={tech.id} />
         ))}
       </div>
     </>
