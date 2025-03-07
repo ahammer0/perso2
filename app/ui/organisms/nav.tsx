@@ -7,7 +7,7 @@ import { ButtonOutline } from "../atoms/buttons";
 
 const navLinksData = [
   {
-    name: "Projets",
+    name: "Projects",
     href: "#projects",
   },
   {
@@ -17,7 +17,6 @@ const navLinksData = [
   },
 ];
 
-//TODO: fix logo margins
 export default function Nav() {
   return (
     <div className="px-2 h-20 text-xl w-full sticky">

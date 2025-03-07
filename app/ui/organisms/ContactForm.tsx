@@ -2,6 +2,8 @@ import { Button } from "../atoms/buttons";
 import { H2 } from "../atoms/headers";
 import { Input, Textarea } from "../atoms/inputs";
 
+//TODO: form handling
+//
 const ContactForm = () => {
   return (
     <section className="p-4 pt-14 pb-0" id="contact">

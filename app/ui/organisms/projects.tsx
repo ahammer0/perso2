@@ -58,29 +58,30 @@ function Card({
   return (
     <>
       <div className="flex flex-col">
-        <h3 className="text-center mb-2 text-xli shadow-md shadow-slate-800">
-          {project.name}
-        </h3>
+        <h3 className="text-center mb-2">{project.name}</h3>
         <div className="flex flex-col md:flex-row">
           <Image
             src={`/uploads/${project.picture.fileName}`}
             alt={project.picture.alt}
             height={250}
             width={200}
-            className="object-contain object-top self-center px-2"
+            className="object-contain object-top self-center px-2 rounded"
           />
           <div className="grow flex flex-col justify-between mb-2">
             <p className="text-base font-normal">{project.description}</p>
             {project.url && (
-              <Link href={project.url} className="self-end underline">
-                Lien vers le site
+              <Link
+                href={project.url}
+                className=" my-4 self-center underline font-normal"
+              >
+                See it live !
               </Link>
             )}
           </div>
         </div>
       </div>
       {/* liste des technos */}
-      <div className="flex flex-row flex-wrap justify-center">
+      <div className="flex flex-row flex-wrap justify-center gap-1">
         {project.technosUsed.map((techno) => (
           <Link href={techno.url}>
             <Image
@@ -88,6 +89,7 @@ function Card({
               alt={techno.picture.alt}
               height={40}
               width={40}
+              className="rounded bg-white"
             />
           </Link>
         ))}

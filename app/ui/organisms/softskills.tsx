@@ -1,9 +1,11 @@
 import { H2, H3 } from "../atoms/headers";
 
+//TODO: display techs with cards& images
+//
 export default function SoftSkills() {
   return (
     <section className=" p-4 pb-6">
-      <article>
+      <article className="mt-4">
         <H2 className="text-center text-slate-900 mb-4">More about myself</H2>
         <p>
           As an enthusiastic developer with a passion for computer science, I
