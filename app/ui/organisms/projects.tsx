@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { Prisma } from "@prisma/client";
-import Tree from "./tree/Tree";
+import Tree from "../molecules/tree/Tree";
 
 // TODO: image cliquable qui donne sur un page détails
 //    TODO: ajouter un slug aux projects
@@ -39,11 +39,15 @@ export default async function CardsWrapper() {
   const nodes = projects.map((project) => <Card project={project} />);
 
   return (
-    <section className="container mx-auto m-4 mb-16 max-w-[700px]">
+    <section
+      className="container mx-auto p-4 pb-16 max-w-[800px]"
+      id="projects"
+    >
       <Tree title="Projects" nodes={nodes} />
     </section>
   );
 }
+
 function Card({
   project,
 }: {
@@ -54,7 +58,9 @@ function Card({
   return (
     <>
       <div className="flex flex-col">
-        <h3 className="text-center mb-2 text-xl">{project.name}</h3>
+        <h3 className="text-center mb-2 text-xli shadow-md shadow-slate-800">
+          {project.name}
+        </h3>
         <div className="flex flex-col md:flex-row">
           <Image
             src={`/uploads/${project.picture.fileName}`}

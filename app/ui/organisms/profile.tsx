@@ -1,19 +1,19 @@
 import React from "react";
 import Image from "next/image";
-import { Button } from "./buttons";
-import { ButtonOutline } from "./buttons";
+import { Button } from "../atoms/buttons";
+import { ButtonOutline } from "../atoms/buttons";
 
 const Profile = () => {
   return (
-    <section className="container flex flex-col text-white p-4 min-h-[calc(100svh-5rem)]">
+    <section className="container mx-auto flex flex-col md:flex-row-reverse items-center text-white p-4 md:p-8 min-h-[calc(100svh-30rem)]">
       <Image
         src="/assets/images/stylized_profile.webp"
         alt="profile picture"
-        className="w-40 md:w-[500px] md:aspect-square rounded-full object-cover mx-auto mt-8 mb-16"
+        className="w-40 lg:w-[500px] md:w-[300px] md:aspect-square rounded-full object-cover mx-auto mt-8 mb-16 p-4"
         height={500}
         width={500}
       />
-      <div className="md:w-1/2 text-left space-y-6">
+      <div className="text-left space-y-6">
         <h1 className="text-3xl md:text-5xl font-bold">
           Crafting responsive and dynamic web applications
         </h1>
@@ -23,8 +23,8 @@ const Profile = () => {
           like React, Next.js, and TailwindCSS.
         </p>
         <div className="flex space-x-4">
-          <ButtonOutline href="#">View my projects</ButtonOutline>
-          <Button href="#">Learn more about me</Button>
+          <ButtonOutline href="#projects">View my projects</ButtonOutline>
+          <Button href="#">More about me</Button>
         </div>
       </div>
     </section>

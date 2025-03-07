@@ -1,4 +1,4 @@
-import TreeNode from "@/app/ui/tree/TreeNode";
+import TreeNode from "./TreeNode";
 
 const Tree = ({ title, nodes }: { title: string; nodes: JSX.Element[] }) => {
   return (

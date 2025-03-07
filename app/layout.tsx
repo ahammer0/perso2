@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Nav from "@/app/ui/nav";
-import Footer from "@/app/ui/footer";
+import Footer from "@/app/ui/organisms/footer";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -28,12 +27,9 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-gray-700 to-neutral-900 min-h-screen text-white flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-900`}
       >
-        <Nav />
-        <div className="grow">
-          {children}
-        </div>
+        <div className="grow">{children}</div>
         <Footer />
       </body>
     </html>

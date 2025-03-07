@@ -2,31 +2,29 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/assets/dev.png";
 import React from "react";
-import { Button } from "./buttons";
-import { ButtonOutline } from "./buttons";
+import { Button } from "../atoms/buttons";
+import { ButtonOutline } from "../atoms/buttons";
 
 const navLinksData = [
   {
     name: "Projets",
-    href: "/",
+    href: "#projects",
   },
   {
     name: "Contact",
-    href: "/",
+    href: "#contact",
     isEm: true,
   },
 ];
 
+//TODO: fix logo margins
 export default function Nav() {
   return (
-    <div className="h-20 text-xl w-full sticky">
-      <nav className="w-4/5 flex items-center justify-between mx-auto h-full">
+    <div className="px-2 h-20 text-xl w-full sticky">
+      <nav className="md:w-4/5 flex items-center justify-between mx-auto h-full">
         <Logo />
-        <div>
-          <NavLink href="#">Github</NavLink>
-          <span className="hidden md:block">
-            <NavLink href="/admin">Admin</NavLink>
-          </span>
+        <div className="md:flex gap-2">
+          <NavLink href="https://github.com/ahammer0">Github</NavLink>
         </div>
         <NavLinks />
       </nav>
@@ -36,15 +34,9 @@ export default function Nav() {
 
 function Logo() {
   return (
-    <Link className="m-4 flex items-center justify-center" href="/">
-      <Image
-        className="m-2"
-        src={logo}
-        height="50"
-        width="50"
-        alt="balise html"
-      />
-      <h1 className="m-4 text-white">Axel Schwindenhammer</h1>
+    <Link className="flex items-center justify-center" href="/">
+      <Image className="" src={logo} height="50" width="50" alt="balise html" />
+      <h1 className="text-white mx-4">Axel Schwindenhammer</h1>
     </Link>
   );
 }
@@ -75,7 +67,7 @@ function NavLink({
   href: string;
 }) {
   return (
-    <Link className="text-zinc-500 m-2" href={href}>
+    <Link className="text-zinc-300 px-2" href={href}>
       {children}
     </Link>
   );
