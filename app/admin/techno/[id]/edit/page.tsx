@@ -2,11 +2,12 @@ import MediaPicker from "../../ui/mediaPicker.tsx";
 import { getMedias } from "@/app/admin/media/actions.tsx";
 import { editTechno,getTechno } from "../../actions.tsx";
 
-export default async function TechnoAdd({
-  params,
-}: {
-  params: { id: String };
-}) {
+export default async function TechnoAdd(
+  props: {
+    params: Promise<{ id: String }>;
+  }
+) {
+  const params = await props.params;
   const medias = await getMedias();
   const techId = parseInt(params.id);
   const techno = await getTechno(techId);

@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { getTechno } from "../actions.tsx";
 
-export default async function EditMedia({
-  params,
-}: {
-  params: { id: String };
-}) {
+export default async function EditMedia(
+  props: {
+    params: Promise<{ id: String }>;
+  }
+) {
+  const params = await props.params;
   const techno = await getTechno(parseInt(params.id));
 
   return (

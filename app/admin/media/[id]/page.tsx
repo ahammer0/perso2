@@ -1,11 +1,12 @@
 import {getMedia} from '../actions.tsx'
 import Image from 'next/image'
 
-export default async function ShowMedia({
-  params
-  }:{
-    params:{id:String}
-  }){
+export default async function ShowMedia(
+  props:{
+      params: Promise<{id:String}>
+    }
+) {
+  const params = await props.params;
   const media = await getMedia(parseInt(params.id))
   console.log(media)
 

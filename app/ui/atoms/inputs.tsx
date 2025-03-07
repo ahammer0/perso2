@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 
 const inputStyle =
-  "p-1 rounded-md shadow-md bg-neutral-300 outline-neutral-700";
+  "p-1 px-2 rounded-md shadow-md bg-neutral-300 outline-neutral-700";
 export const Input = ({
   className,
   ...props

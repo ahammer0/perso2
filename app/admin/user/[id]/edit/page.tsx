@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { getOneUser, editUser } from "../../actions.tsx";
-export default async function EditUser({ params }: { params: { id: String } }) {
+export default async function EditUser(props: { params: Promise<{ id: String }> }) {
+  const params = await props.params;
   const userId = parseInt(params.id);
   const user = await getOneUser(userId);
 

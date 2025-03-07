@@ -2,11 +2,12 @@ import { getProject } from "../actions";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function EditMedia({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function EditMedia(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = await props.params;
   const project = await getProject(parseInt(params.id));
   if (project===null){return}
   return (

@@ -1,6 +1,7 @@
 import {editMedia,getMedia} from '../../actions.tsx'
 
-export default async function EditMedia({params}:{params:{id:String}}){
+export default async function EditMedia(props:{params: Promise<{id:String}>}) {
+  const params = await props.params;
   const media = await getMedia(parseInt(params.id))
 
   return <>

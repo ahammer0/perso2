@@ -1,5 +1,7 @@
 import TreeNode from "./TreeNode";
 
+import type { JSX } from "react";
+
 const Tree = ({ title, nodes }: { title: string; nodes: JSX.Element[] }) => {
   return (
     <div className="tree grid md:grid-cols-[16rem_auto] grid-cols-[4rem_auto]">

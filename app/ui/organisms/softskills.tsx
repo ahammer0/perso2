@@ -2,9 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { GetTechno } from "@/types/techno";
 import { H2, H3 } from "../atoms/headers";
 import TechnoCard from "../molecules/TechnoCard";
-//
-//TODO: display techs with cards& images
-//
+
 async function getUnusedTechnos() {
   const prisma = new PrismaClient();
   let technos: GetTechno[] = [];

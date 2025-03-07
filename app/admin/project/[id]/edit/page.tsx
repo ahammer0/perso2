@@ -1,7 +1,8 @@
 import { getProject } from "../../actions"
 import Image from "next/image"
 
-export default async function EditProject({params}:{params:{id:string}}){
+export default async function EditProject(props:{params: Promise<{id:string}>}) {
+  const params = await props.params;
   const project = await getProject(parseInt(params.id))
 
   return <>
