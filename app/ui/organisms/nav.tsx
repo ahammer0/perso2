@@ -4,6 +4,10 @@ import logo from "@/public/assets/dev.png";
 import React from "react";
 import { Button } from "../atoms/buttons";
 import { ButtonOutline } from "../atoms/buttons";
+import isAuth from "@/app/admin/lib/isAuth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import logoutAction from "@/app/admin/lib/logoutAction";
 
 const navLinksData = [
   {
@@ -17,7 +21,8 @@ const navLinksData = [
   },
 ];
 
-export default function Nav() {
+export default async function Nav() {
+  const isLogged = await isAuth();
   return (
     <div className="px-2 h-20 text-xl w-full sticky">
       <nav className="md:w-4/5 flex items-center justify-between mx-auto h-full">
@@ -26,6 +31,15 @@ export default function Nav() {
           <NavLink href="https://github.com/ahammer0">Github</NavLink>
         </div>
         <NavLinks />
+        {isLogged && (
+          <Button
+            type="button"
+            className="h-10 w-10 p-0"
+            onClick={logoutAction}
+          >
+            <FontAwesomeIcon icon={faRightToBracket} />
+          </Button>
+        )}
       </nav>
     </div>
   );

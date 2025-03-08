@@ -17,7 +17,7 @@ export const H2 = ({ className, ...props }: HeaderProps) => {
 };
 export const H3 = ({ className, ...props }: HeaderProps) => {
   return (
-    <h3 className={twMerge("text-3xl md:text-3xl font-bold", className)}>
+    <h3 className={twMerge("text-2xl md:text-3xl font-bold", className)}>
       {props.children}
     </h3>
   );

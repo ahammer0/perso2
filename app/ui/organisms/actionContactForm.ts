@@ -2,7 +2,6 @@
 import { ErrorType, Response, ResponseStatus } from "@/types/serverResponse";
 import nodeMailer from "nodemailer";
 
-//TODO: send email
 interface submitData {
   email: string;
   message: string;

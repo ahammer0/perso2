@@ -7,6 +7,7 @@ export enum ErrorType {
   BadRequest = "bad request",
   UnprocessableEntity = "unprocessable entity",
   InternalError = "internal error",
+  Unauthorized = "unauthorized",
 }
 interface ErrorResponse<T> {
   status: ResponseStatus.Error;
