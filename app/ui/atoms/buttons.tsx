@@ -15,7 +15,10 @@ export function Button({ children, className, ...props }: ButtonProps) {
     return (
       <Link
         className={twMerge(
-          "bg-indigo-500 text-white p-2 px-4 rounded-md m-2 hover:shadow-lg hover:shadow-slate-900 hover:scale-[1.02] hover:brightness-110 shadow-slate-800 transition-all shadow-md disabled:bg-gray-400 disabled:text-gray-600 disabled:cursor-not-allowed disabled:hover:scale-100",
+          `inline-block bg-indigo-500 text-white p-2 px-4 rounded-md my-2  
+hover:shadow-lg hover:shadow-slate-900 hover:scale-[1.02] hover:brightness-110 
+shadow-slate-800 transition-all shadow-md 
+disabled:bg-gray-400 disabled:text-gray-600 disabled:cursor-not-allowed disabled:hover:scale-100`,
           className,
         )}
         {...props}
@@ -27,7 +30,10 @@ export function Button({ children, className, ...props }: ButtonProps) {
   return (
     <button
       className={twMerge(
-        "bg-indigo-500 text-white p-2 px-4 rounded-md m-2 hover:shadow-lg hover:shadow-slate-900 hover:scale-[1.02] hover:brightness-110 shadow-slate-800 transition-all shadow-md disabled:bg-gray-400 disabled:text-gray-600 disabled:cursor-not-allowed disabled:hover:scale-100",
+        `inline-block bg-indigo-500 text-white p-2 px-4 rounded-md my-2 
+hover:shadow-lg hover:shadow-slate-900 hover:scale-[1.02] hover:brightness-110 
+shadow-slate-800 transition-all shadow-md 
+disabled:bg-gray-400 disabled:text-gray-600 disabled:cursor-not-allowed disabled:hover:scale-100`,
         className,
       )}
       {...props}

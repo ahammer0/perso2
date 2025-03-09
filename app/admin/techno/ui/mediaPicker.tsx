@@ -12,7 +12,6 @@ export default function MediaPicker({
   medias: Prisma.MediaGetPayload<{}>[];
   defaultValue?: number;
 }) {
-  console.log(medias);
   const [selectedImg, setSelectedImg] = useState(defaultValue);
 
   return (
@@ -30,7 +29,7 @@ export default function MediaPicker({
           />
         ))}
       </div>
-      <input type="hidden" value={selectedImg} name={name} readOnly/>
+      <input type="hidden" value={selectedImg} name={name} readOnly />
     </>
   );
 }

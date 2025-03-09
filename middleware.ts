@@ -11,7 +11,7 @@ const middleware = async (req: NextRequest) => {
     return NextResponse.redirect(new URL("/admin/login", req.url));
   }
   //
-  //handling /admin/login
+  //handling /admin/login when isLogged
   if (isLogged && path === "/admin/login") {
     return NextResponse.redirect(new URL("/admin/", req.url));
   }

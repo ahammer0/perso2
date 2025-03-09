@@ -11,7 +11,6 @@ export function NewProjectForm() {
     const newProject = {
       title: formData.get("projectName"),
     };
-    console.log(newProject);
     //on le teste
     try {
       const project = await prisma.project.create({
@@ -19,7 +18,6 @@ export function NewProjectForm() {
           title: formData.get("projectName")?.toString() || "",
         },
       });
-      console.log("log du projet enregistré", project);
     } catch (e) {
       console.error(e);
     } finally {

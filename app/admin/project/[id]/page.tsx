@@ -2,14 +2,14 @@ import { getProject } from "../actions";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function EditMedia(
-  props: {
-    params: Promise<{ id: string }>;
-  }
-) {
+export default async function EditMedia(props: {
+  params: Promise<{ id: string }>;
+}) {
   const params = await props.params;
   const project = await getProject(parseInt(params.id));
-  if (project===null){return}
+  if (project === null) {
+    return;
+  }
   return (
     <>
       <h2>Détails du projet : {project.name}</h2>
@@ -28,11 +28,12 @@ export default async function EditMedia(
             alt={techno.picture.alt}
             width={60}
             height={60}
+            key={techno.id}
           />
         ))}
       </div>
 
-      <Link href={project.url??'#'}>Lien vers le site du projet</Link>
+      <Link href={project.url ?? "#"}>Lien vers le site du projet</Link>
     </>
   );
 }

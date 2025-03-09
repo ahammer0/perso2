@@ -16,26 +16,26 @@ export default async function AdminLayout({
 
       {isLogged ? (
         <div className="text-white flex flex-row">
-          <div className="w-[200px] p-4">
+          <div className=" p-4">
             <ul>
-              <li>
+              <li className="py-2">
                 <Link href="/admin/">Admin</Link>
               </li>
-              <li>
+              <li className="py-2">
                 <Link href="/admin/project">Projets</Link>
               </li>
-              <li>
+              <li className="py-2">
                 <Link href="/admin/techno">Technos</Link>
               </li>
-              <li>
+              <li className="py-2">
                 <Link href="/admin/media">Medias</Link>
               </li>
-              <li>
+              <li className="py-2">
                 <Link href="/admin/user">Utilisateurs</Link>
               </li>
             </ul>
           </div>
-          <div className="p-4">{children}</div>
+          <div className="p-4 grow">{children}</div>
         </div>
       ) : (
         login

@@ -2,14 +2,16 @@ import Link from "next/link";
 import Image from "next/image";
 import DeleteButton from "./ui/deleteButton";
 import { getTechnos } from "./actions";
+import { H2 } from "@/app/ui/atoms/headers";
+import { Button } from "@/app/ui/atoms/buttons";
 
 export default async function Page() {
   const technos = await getTechnos();
 
   return (
     <>
-      <h2>Page des technos</h2>
-      <Link href="/admin/techno/add">Ajouter une techno</Link>
+      <H2>Page des technos</H2>
+      <Button href="/admin/techno/add">Ajouter une techno</Button>
       <table className="border border-collapse">
         <thead>
           <tr>
