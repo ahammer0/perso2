@@ -20,6 +20,9 @@ const middleware = async (req: NextRequest) => {
 };
 export default middleware;
 
+//
+// Execute the middleware for theses routes matcher
+//
 export const config = {
   matcher: ["/admin", "/admin/:path*"],
 };
