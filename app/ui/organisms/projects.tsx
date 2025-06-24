@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { Prisma } from "@prisma/client";
@@ -10,34 +9,13 @@ import TechnoCard from "../molecules/TechnoCard";
 //    TODO: rendre les images cliquable
 //    TODO: créer une page détails avec le slug en param
 
-export default async function CardsWrapper() {
-  async function fetchLastProjects() {
-    const prisma = new PrismaClient();
-    let projects = null;
-    try {
-      projects = await prisma.project.findMany({
-        orderBy: [{ id: "desc" }],
-        take: 3,
-        where: { isPublished: true },
-        include: {
-          picture: true,
-          technosUsed: { include: { picture: true } },
-        },
-      });
-    } catch (e) {
-      console.error(e);
-    } finally {
-      prisma.$disconnect();
-      return projects;
-    }
-  }
-
-  const projects = await fetchLastProjects();
-
-  if (projects === null) {
-    return;
-  }
-
+export default async function CardsWrapper({
+  projects,
+}: {
+  projects: Prisma.ProjectGetPayload<{
+    include: { picture: true; technosUsed: { include: { picture: true } } };
+  }>[];
+}) {
   const nodes = projects.map((project) => <Card project={project} />);
 
   return (
@@ -70,7 +48,7 @@ function Card({
             className="object-contain object-top self-center px-2 rounded"
           />
           <div className="grow flex flex-col justify-between mb-2">
-            <p className="text-base font-normal">{project.description}</p>
+            <p className="text-base font-normal">{project.shortDescription}</p>
             {project.url && (
               <Link
                 href={project.url}

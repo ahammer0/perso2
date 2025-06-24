@@ -32,12 +32,14 @@ export async function addProject(projectForm: FormData) {
       },
     },
     description: projectForm.get("description")?.toString() ?? "",
+    shortDescription: projectForm.get("shortDescription")?.toString() ?? "",
     url: projectForm.get("url")?.toString() ?? "",
     technosUsed: {
       connect: JSON.parse(projectForm.get("technosUsed")?.toString() ?? "[]"),
     },
     isPublished: projectForm.get("isPublished") === "on",
   };
+
   const newProject = await prisma.project.create({
     data: project,
   });
@@ -60,6 +62,7 @@ export async function editProject(projectForm: FormData) {
         id: parseInt(projectForm.get("pictureId")?.toString() ?? ""),
       },
     },
+    shortDescription: projectForm.get("shortDescription")?.toString() ?? "",
     description: projectForm.get("description")?.toString() ?? "",
     url: projectForm.get("url")?.toString() ?? "",
     technosUsed: {

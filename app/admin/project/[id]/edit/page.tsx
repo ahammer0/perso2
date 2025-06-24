@@ -49,13 +49,25 @@ export default async function EditProject(props: {
         </div>
 
         <div className="flex flex-col">
+          <label htmlFor="shortDescription">Description courte du projet</label>
+          <textarea
+            name="shortDescription"
+            cols={30}
+            rows={5}
+            maxLength={200}
+            required
+            placeholder="max 200 caractères"
+            defaultValue={project.shortDescription}
+          ></textarea>
+        </div>
+
+        <div className="flex flex-col">
           <label htmlFor="description">Description du projet</label>
           <textarea
             name="description"
             cols={30}
             rows={10}
-            required
-            defaultValue={project.description}
+            defaultValue={project.description ?? undefined}
           ></textarea>
         </div>
 

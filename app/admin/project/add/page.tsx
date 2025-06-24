@@ -23,8 +23,20 @@ export default async function addForm() {
         </div>
 
         <div className="flex flex-col">
+          <label htmlFor="shortDescription">Description courte du projet</label>
+          <textarea
+            name="shortDescription"
+            cols={30}
+            rows={5}
+            maxLength={200}
+            required
+            placeholder="max 200 caractères"
+          ></textarea>
+        </div>
+
+        <div className="flex flex-col">
           <label htmlFor="description">Description du projet</label>
-          <textarea name="description" cols={30} rows={10} required></textarea>
+          <textarea name="description" cols={30} rows={10}></textarea>
         </div>
 
         <div className="flex flex-col">

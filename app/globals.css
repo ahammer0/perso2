@@ -23,6 +23,9 @@ body {
   h2 {
     @apply text-3xl md:text-5xl font-bold;
   }
+  h3 {
+    @apply text-xl md:text-2xl font-bold;
+  }
   input,
   textarea {
     @apply text-black px-2 py-1 rounded-md shadow-md bg-neutral-300 outline-neutral-700;

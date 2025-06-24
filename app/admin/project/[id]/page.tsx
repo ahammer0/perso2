@@ -13,7 +13,6 @@ export default async function EditMedia(props: {
   if (project === null) {
     return;
   }
-  console.log("project", project);
   return (
     <>
       <h2>Détails du projet : {project.name}</h2>
@@ -23,8 +22,14 @@ export default async function EditMedia(props: {
         height={300}
         width={300}
       />
-      <p>Description du projet: {project.description}</p>
+      <h3>Description courte du projet:</h3>
+      <p> {project.shortDescription}</p>
+
+      <h3>Description du projet:</h3>
+      <p> {project.description}</p>
+
       <p>Est visible: {project.isPublished ? "oui" : "non"}</p>
+
       <p>Technos utilisées</p>
       <div className="flex flex-row gap-1">
         {project.technosUsed.map((techno) => (
