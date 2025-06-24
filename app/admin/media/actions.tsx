@@ -70,8 +70,9 @@ export async function addMedia(mediaForm: FormData) {
       type: mediaForm.get("type"),
     },
   });
+
   prisma.$disconnect;
-  redirect(`/admin/media/${newMedia.id}`);
+  redirect(`/admin/media/${newMedia.id}?confirm=true`);
 }
 
 export async function deleteMedia(id: Number) {

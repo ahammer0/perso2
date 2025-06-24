@@ -1,19 +1,18 @@
-import { addTechno } from "../actions.tsx";
-import MediaPicker from "../ui/mediaPicker.tsx";
-import {getMedias} from '../../media/actions.tsx'
-
+import { addTechno } from "../actions";
+import MediaPicker from "../ui/mediaPicker";
+import { getMedias } from "../../media/actions";
 
 export default async function TechnoAdd() {
-  const medias = await getMedias()
+  const medias = await getMedias();
   return (
     <>
       <h2>Ajout d'une techno</h2>
-      <form action={addTechno} className="flex flex-col text-black">
+      <form action={addTechno} className="flex flex-col">
         <div className="flex flex-col">
           <label htmlFor="name">Nom de la techno</label>
           <input type="text" name="name" required />
         </div>
-        <MediaPicker name="pictureId" medias={medias}/>
+        <MediaPicker name="pictureId" medias={medias} />
         <div className="flex flex-col">
           <label htmlFor="url">Url de la techno</label>
           <input type="text" name="url" />
@@ -23,7 +22,7 @@ export default async function TechnoAdd() {
           <input type="checkbox" name="isPublished" />
         </div>
 
-        <input type="submit" value="Ajouter le média" />
+        <input type="submit" value="Ajouter la techno" />
       </form>
     </>
   );

@@ -7,16 +7,18 @@ export default function MediaPicker({
   medias,
   name,
   defaultValue = 0,
+  required,
 }: {
   name: string;
   medias: Prisma.MediaGetPayload<{}>[];
   defaultValue?: number;
+  required?: boolean;
 }) {
   const [selectedImg, setSelectedImg] = useState(defaultValue);
 
   return (
     <>
-      <div className="flex flex-row gap-2 m-2">
+      <div className="flex flex-row flex-wrap gap-2 m-2">
         {medias.map((el) => (
           <Image
             src={`/uploads/${el.fileName}`}
@@ -28,8 +30,16 @@ export default function MediaPicker({
             key={el.id}
           />
         ))}
+        {medias.length === 0 && (
+          <p>Aucune image disponible. Veuillez les ajouter avant</p>
+        )}
       </div>
-      <input type="hidden" value={selectedImg} name={name} readOnly />
+      <input
+        type="hidden"
+        value={selectedImg}
+        name={name}
+        required={required}
+      />
     </>
   );
 }

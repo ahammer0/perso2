@@ -1,6 +1,9 @@
+import TechnoCard from "@/app/ui/molecules/TechnoCard";
+import React from "react";
 import { getProject } from "../actions";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/app/ui/atoms/buttons";
 
 export default async function EditMedia(props: {
   params: Promise<{ id: string }>;
@@ -10,6 +13,7 @@ export default async function EditMedia(props: {
   if (project === null) {
     return;
   }
+  console.log("project", project);
   return (
     <>
       <h2>Détails du projet : {project.name}</h2>
@@ -19,21 +23,21 @@ export default async function EditMedia(props: {
         height={300}
         width={300}
       />
-      <p>{project.description}</p>
+      <p>Description du projet: {project.description}</p>
+      <p>Est visible: {project.isPublished ? "oui" : "non"}</p>
       <p>Technos utilisées</p>
       <div className="flex flex-row gap-1">
         {project.technosUsed.map((techno) => (
-          <Image
-            src={`/uploads/${techno.picture.fileName}`}
-            alt={techno.picture.alt}
-            width={60}
-            height={60}
-            key={techno.id}
-          />
+          <React.Fragment key={techno.id}>
+            <TechnoCard techno={techno} />
+          </React.Fragment>
         ))}
       </div>
 
       <Link href={project.url ?? "#"}>Lien vers le site du projet</Link>
+      <Button href={`/admin/project/${params.id}/edit`} className="ml-2">
+        Éditer
+      </Button>
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { Input } from "@/app/ui/atoms/inputs";
 import { addMedia } from "../actions";
-import PasteFileInput from "../ui/pasteFileInput";
+import ImageInput from "../ui/pasteFileInput";
 import { Button } from "@/app/ui/atoms/buttons";
 import { H2 } from "@/app/ui/atoms/headers";
 
@@ -16,7 +16,7 @@ export default function MediaAdd() {
         <div className="flex flex-col">
           <label htmlFor="file">Fichier</label>
           {/* <input type="file" name="file" required/> */}
-          <PasteFileInput name="file" />
+          <ImageInput name="file" />
         </div>
         <div className="flex flex-col">
           <label htmlFor="type"></label>

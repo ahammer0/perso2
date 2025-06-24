@@ -31,7 +31,7 @@ export async function addProject(projectForm: FormData) {
         id: parseInt(projectForm.get("pictureId")?.toString() ?? ""),
       },
     },
-    description: projectForm.get("descritpion")?.toString() ?? "",
+    description: projectForm.get("description")?.toString() ?? "",
     url: projectForm.get("url")?.toString() ?? "",
     technosUsed: {
       connect: JSON.parse(projectForm.get("technosUsed")?.toString() ?? "[]"),
@@ -45,8 +45,14 @@ export async function addProject(projectForm: FormData) {
   redirect(`/admin/project/${newProject.id}`);
 }
 
-export async function editProject(id: number, projectForm: FormData) {
+export async function editProject(projectForm: FormData) {
   const prisma = new PrismaClient();
+  const id = parseInt(projectForm.get("id")?.toString() ?? "");
+
+  if (!id || isNaN(id)) {
+    throw new Error("id is not a number");
+  }
+
   const project: Prisma.ProjectUpdateInput = {
     name: projectForm.get("name")?.toString() ?? "",
     picture: {
@@ -54,10 +60,10 @@ export async function editProject(id: number, projectForm: FormData) {
         id: parseInt(projectForm.get("pictureId")?.toString() ?? ""),
       },
     },
-    description: projectForm.get("descritpion")?.toString() ?? "",
+    description: projectForm.get("description")?.toString() ?? "",
     url: projectForm.get("url")?.toString() ?? "",
     technosUsed: {
-      connect: JSON.parse(projectForm.get("technosUsed")?.toString() ?? ""),
+      set: JSON.parse(projectForm.get("technosUsed")?.toString() ?? ""),
     },
     isPublished: projectForm.get("isPublished") === "on",
   };

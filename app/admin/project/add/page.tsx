@@ -19,7 +19,7 @@ export default async function addForm() {
 
         <div className="flex flex-col overflow-x-scroll">
           <label htmlFor="pictureId">Image du projet</label>
-          <MediaPicker name="pictureId" medias={medias} />
+          <MediaPicker name="pictureId" medias={medias} required />
         </div>
 
         <div className="flex flex-col">
