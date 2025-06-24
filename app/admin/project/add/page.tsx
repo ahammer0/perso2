@@ -16,6 +16,16 @@ export default async function addForm() {
           <label htmlFor="name">Nom du projet</label>
           <input type="text" name="name" required />
         </div>
+        <div className="flex flex-col">
+          <label htmlFor="slug">Slug</label>
+          <input
+            type="text"
+            name="slug"
+            required
+            maxLength={100}
+            pattern="/^[a-z][a-z0-9\-]*[a-z]$/"
+          />
+        </div>
 
         <div className="flex flex-col overflow-x-scroll">
           <label htmlFor="pictureId">Image du projet</label>

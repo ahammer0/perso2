@@ -37,6 +37,17 @@ export default async function EditProject(props: {
             defaultValue={project?.name}
           />
         </div>
+        <div className="flex flex-col">
+          <label htmlFor="slug">Slug</label>
+          <input
+            type="text"
+            name="slug"
+            required
+            maxLength={100}
+            defaultValue={project.slug}
+            pattern="/^[a-z][a-z0-9\-]*[a-z]$/"
+          />
+        </div>
 
         <div className="flex flex-col overflow-x-scroll">
           <label htmlFor="pictureId">Image du projet</label>

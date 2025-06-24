@@ -33,6 +33,7 @@ export async function addProject(projectForm: FormData) {
     },
     description: projectForm.get("description")?.toString() ?? "",
     shortDescription: projectForm.get("shortDescription")?.toString() ?? "",
+    slug: projectForm.get("slug")?.toString() ?? "",
     url: projectForm.get("url")?.toString() ?? "",
     technosUsed: {
       connect: JSON.parse(projectForm.get("technosUsed")?.toString() ?? "[]"),
@@ -64,6 +65,7 @@ export async function editProject(projectForm: FormData) {
     },
     shortDescription: projectForm.get("shortDescription")?.toString() ?? "",
     description: projectForm.get("description")?.toString() ?? "",
+    slug: projectForm.get("slug")?.toString() ?? "",
     url: projectForm.get("url")?.toString() ?? "",
     technosUsed: {
       set: JSON.parse(projectForm.get("technosUsed")?.toString() ?? ""),
