@@ -44,8 +44,8 @@ jobs:
           script: |
             cd ${{ secrets.REMOTE_PATH }}
             source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.REMOTE_PATH }}/22/bin/activate
+            export DATABASE_URL=${{ secrets.DATABASE_URL }}
             /usr/sbin/cloudlinux-selector install-modules --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}
             npx prisma generate
             npx prisma migrate deploy
-            /usr/sbin/cloudlinux-selector run-script --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }} --script name=build
             /usr/sbin/cloudlinux-selector restart --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}
