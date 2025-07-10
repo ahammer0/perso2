@@ -36,7 +36,6 @@ export default async function Home({
       <span className="text-red-500">The project asked does dot exist</span>
     );
   }
-  console.log("project", project);
 
   return (
     <article className="flex flex-col items-center px-4">
