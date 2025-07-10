@@ -16,7 +16,9 @@ export default async function CardsWrapper({
     include: { picture: true; technosUsed: { include: { picture: true } } };
   }>[];
 }) {
-  const nodes = projects.map((project) => <Card project={project} />);
+  const nodes = projects.map((project) => (
+    <Card project={project} key={project.id} />
+  ));
 
   return (
     <section
@@ -37,17 +39,21 @@ function Card({
 }) {
   return (
     <>
-      <div className="flex flex-col">
-        <h3 className="text-center mb-2">{project.name}</h3>
+      <div className="flex flex-col items-stretch">
+        <h3 className="text-center mb-2">
+          <Link href={`/projects/${project.slug}`}>{project.name}</Link>
+        </h3>
         <div className="flex flex-col md:flex-row">
-          <Image
-            src={`/uploads/${project.picture.fileName}`}
-            alt={project.picture.alt}
-            height={250}
-            width={200}
-            className="object-contain object-top self-center px-2 rounded"
-          />
-          <div className="grow flex flex-col justify-between mb-2">
+          <Link href={`/projects/${project.slug}`} className="block shrink-0">
+            <Image
+              src={`/uploads/${project.picture.fileName}`}
+              alt={project.picture.alt}
+              height={250}
+              width={200}
+              className="object-contain object-center"
+            />
+          </Link>
+          <div className="flex flex-col justify-between mb-2 px-2 ">
             <p className="text-base font-normal">{project.shortDescription}</p>
             {project.url && (
               <Link

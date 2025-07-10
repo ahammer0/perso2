@@ -1,9 +1,9 @@
 "use server";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient, Media } from "@prisma/client";
 
 export async function getProjectMedias() {
   const prisma = new PrismaClient();
-  let medias: Prisma.MediaGetPayload<{}>[] = [];
+  let medias: Media[] = [];
   try {
     medias = await prisma.media.findMany({
       where: {
@@ -14,7 +14,7 @@ export async function getProjectMedias() {
   } catch (e) {
     console.error(e);
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
     return medias;
   }
 }

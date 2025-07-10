@@ -6,7 +6,7 @@ export default async function TechnoAdd() {
   const medias = await getMedias();
   return (
     <>
-      <h2>Ajout d'une techno</h2>
+      <h2>Ajout d&apos;une techno</h2>
       <form action={addTechno} className="flex flex-col">
         <div className="flex flex-col">
           <label htmlFor="name">Nom de la techno</label>

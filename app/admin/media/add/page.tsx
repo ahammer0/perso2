@@ -7,7 +7,7 @@ import { H2 } from "@/app/ui/atoms/headers";
 export default function MediaAdd() {
   return (
     <>
-      <H2>Ajout d'utilisateur</H2>
+      <H2>Ajout d&apos;utilisateur</H2>
       <form action={addMedia} className="flex flex-col">
         <div className="flex flex-col">
           <label htmlFor="alt">Description alt</label>
@@ -21,7 +21,7 @@ export default function MediaAdd() {
         <div className="flex flex-col">
           <label htmlFor="type"></label>
           <select name="type" className="text-black">
-            <option value="picture">Image d' illustration</option>
+            <option value="picture">Image d&apos; illustration</option>
             <option value="icon">Icone</option>
             <option value="profile">Photo de profil</option>
           </select>

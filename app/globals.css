@@ -30,6 +30,9 @@ body {
   textarea {
     @apply text-black px-2 py-1 rounded-md shadow-md bg-neutral-300 outline-neutral-700;
   }
+  a {
+    @apply underline;
+  }
 }
 
 @layer utilities {

@@ -17,7 +17,8 @@ export default function ImageInput({
     defaultPicture ? `/uploads/${defaultPicture}` : "",
   );
 
-  function handlePaste(e: any) {
+  function handlePaste(e: ClipboardEvent) {
+    if (e.clipboardData === null) return;
     const items: DataTransferItemList = e.clipboardData.items;
     if (items[0].type.startsWith("image")) {
       const file = items[0].getAsFile();

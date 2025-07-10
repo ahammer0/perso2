@@ -47,7 +47,7 @@ export default async function Nav() {
 
 function Logo() {
   return (
-    <Link className="flex items-center justify-center" href="/">
+    <Link className="flex items-center justify-center no-underline" href="/">
       <Image className="" src={logo} height="50" width="50" alt="balise html" />
       <h1 className="text-white mx-4">Axel Schwindenhammer</h1>
     </Link>
@@ -57,7 +57,7 @@ function Logo() {
 function NavLinks() {
   return (
     <div className="flex-row items-center hidden md:flex">
-      {navLinksData.map((el: any, id: any): any =>
+      {navLinksData.map((el, id) =>
         el.isEm ? (
           <Button href={el.href} key={id}>
             {el.name}
@@ -80,7 +80,7 @@ function NavLink({
   href: string;
 }) {
   return (
-    <Link className="text-zinc-300 px-2" href={href}>
+    <Link className="text-zinc-300 px-2 no-underline" href={href}>
       {children}
     </Link>
   );

@@ -4,19 +4,19 @@ import fs from "fs/promises";
 import sharp from "sharp";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { Prisma } from "@prisma/client";
+import { Media } from "@prisma/client";
 
 const uploadsDirPath = process.cwd() + "/public/uploads/";
 
 export async function getMedias() {
   const prisma = new PrismaClient();
-  let medias: Prisma.MediaGetPayload<{}>[] = [];
+  let medias: Media[] = [];
   try {
     medias = await prisma.media.findMany({});
   } catch (e) {
     console.error(e);
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
     return medias;
   }
 }
@@ -29,7 +29,7 @@ export async function getMedia(id: number) {
   } catch (e) {
     console.error(e);
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
     return media;
   }
 }
@@ -63,37 +63,61 @@ export async function addMedia(mediaForm: FormData) {
   await fs.writeFile(uploadsDirPath + fileName, buffer);
   //add db entry
   const prisma = new PrismaClient();
+
+  const alt = mediaForm.get("alt");
+  if (typeof alt !== "string") throw new Error("no alt provided");
+
+  const type = mediaForm.get("type");
+  if (type != "picture" && type != "icon" && type != "profile")
+    throw new Error(
+      "no type provided, or provided wrong type. Should be picture, icon or profile",
+    );
+
   const newMedia = await prisma.media.create({
     data: {
       fileName: fileName,
-      alt: mediaForm.get("alt"),
-      type: mediaForm.get("type"),
+      alt: alt,
+      type: type,
     },
   });
 
-  prisma.$disconnect;
+  prisma.$disconnect();
   redirect(`/admin/media/${newMedia.id}?confirm=true`);
 }
 
-export async function deleteMedia(id: Number) {
+export async function deleteMedia(id: number) {
   const prisma = new PrismaClient();
+
   const media = await prisma.media.findUnique({
     where: { id: id },
     select: { fileName: true },
   });
+  if (!media) {
+    prisma.$disconnect();
+    return;
+  }
   await prisma.media.delete({ where: { id: id } });
   await fs.unlink(uploadsDirPath + media.fileName);
   revalidatePath("/admin/media");
-  prisma.$disconnect;
+  prisma.$disconnect();
 }
 
-export async function editMedia(id: Number, mediaForm: FormData) {
+export async function editMedia(id: number, mediaForm: FormData) {
   const prisma = new PrismaClient();
+  const alt = mediaForm.get("alt");
+  if (typeof alt !== "string") throw new Error("no alt provided");
+
+  const type = mediaForm.get("type");
+  if (type != "picture" && type != "icon" && type != "profile")
+    throw new Error(
+      "no type provided, or provided wrong type. Should be picture, icon or profile",
+    );
+
   await prisma.media.update({
     where: { id: id },
     data: {
-      alt: mediaForm.get("alt"),
-      type: mediaForm.get("type"),
+      alt: alt,
+      type: type,
     },
   });
   redirect(`/admin/media/${id}`);

@@ -1,9 +1,12 @@
-import { PrismaClient } from "@prisma/client";
-import { getOneUser, editUser } from "../../actions.tsx";
-export default async function EditUser(props: { params: Promise<{ id: String }> }) {
+import { getOneUser, editUser } from "../../actions";
+export default async function EditUser(props: {
+  params: Promise<{ id: string }>;
+}) {
   const params = await props.params;
   const userId = parseInt(params.id);
   const user = await getOneUser(userId);
+
+  if (!user) throw new Error("User not found");
 
   return (
     <>
@@ -12,7 +15,7 @@ export default async function EditUser(props: { params: Promise<{ id: String }> 
         className="flex flex-col text-black"
       >
         <div className="flex flex-col">
-          <label htmlFor="name">Nom de l' utilisateur</label>
+          <label htmlFor="name">Nom de l&apos; utilisateur</label>
           <input type="text" name="name" defaultValue={user.name} />
         </div>
 

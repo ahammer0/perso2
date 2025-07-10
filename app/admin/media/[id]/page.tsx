@@ -4,14 +4,14 @@ import { Button } from "@/app/ui/atoms/buttons";
 
 export default async function ShowMedia(props: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<any>;
+  searchParams: Promise<{ confirm: string }>;
 }) {
   const params = await props.params;
   const media = await getMedia(parseInt(params.id));
   const isConfirm = (await props.searchParams).confirm === "true";
 
   if (!media) {
-    return <p className="text-red-500">Le media demandé n'existe pas</p>;
+    return <p className="text-red-500">Le media demandé n&apos;existe pas</p>;
   }
   return (
     <>

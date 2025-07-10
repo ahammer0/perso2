@@ -1,5 +1,4 @@
 import CardsWrapper from "@/app/ui/organisms/projects";
-import Nav from "@/app/ui/organisms/nav";
 import { PrismaClient } from "@prisma/client";
 
 export default async function Home() {
@@ -27,14 +26,5 @@ export default async function Home() {
   if (projects === null) {
     return;
   }
-  return (
-    <div>
-      <div className="relative bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-gray-700 to-neutral-900 min-h-screen text-white flex flex-col">
-        <Nav />
-        <div className="p-4">
-          <CardsWrapper projects={projects} />
-        </div>
-      </div>
-    </div>
-  );
+  return <CardsWrapper projects={projects} />;
 }

@@ -44,7 +44,7 @@ export async function addProject(projectForm: FormData) {
   const newProject = await prisma.project.create({
     data: project,
   });
-  prisma.$disconnect;
+  prisma.$disconnect();
   redirect(`/admin/project/${newProject.id}`);
 }
 
@@ -76,7 +76,7 @@ export async function editProject(projectForm: FormData) {
     where: { id: id },
     data: project,
   });
-  prisma.$disconnect;
+  prisma.$disconnect();
   redirect(`/admin/project/${newProject.id}`);
 }
 
@@ -84,5 +84,5 @@ export async function deleteProject(id: number) {
   const prisma = new PrismaClient();
   await prisma.project.delete({ where: { id: id } });
   revalidatePath(`/admin/project`);
-  prisma.$disconnect;
+  prisma.$disconnect();
 }

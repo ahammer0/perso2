@@ -2,10 +2,11 @@ import CardsWrapper from "@/app/ui/organisms/projects";
 import Profile from "@/app/ui/organisms/profile";
 import SoftSkills from "@/app/ui/organisms/softskills";
 import Nav from "@/app/ui/organisms/nav";
-import ContactForm from "./ui/organisms/ContactForm";
-import WavySeparator from "./ui/atoms/WavySeparator";
+import ContactForm from "@/app/ui/organisms/ContactForm";
+import WavySeparator from "@/app/ui/atoms/WavySeparator";
 import Link from "next/link";
 import { PrismaClient } from "@prisma/client";
+import Footer from "@/app/ui/organisms/footer";
 
 export default async function Home() {
   async function fetchLastProjects() {
@@ -59,6 +60,7 @@ export default async function Home() {
         <ContactForm />
       </div>
       <WavySeparator from="bg-neutral-900" to="bg-gray-700" reversed />
+      <Footer />
     </div>
   );
 }

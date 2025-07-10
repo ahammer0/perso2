@@ -18,10 +18,18 @@ export default async function Page() {
     } catch (e) {
       console.error(e);
     } finally {
-      prisma.$disconnect;
+      prisma.$disconnect();
     }
   }
   const users = await fetchUsers();
+  if (!users) {
+    return (
+      <>
+        <h2>Page des users</h2>
+        <p>Il n&apos;y a pas d&apos;utilisateurs</p>
+      </>
+    );
+  }
 
   return (
     <>
@@ -42,7 +50,7 @@ export default async function Page() {
               <td className="border p-2">{el.name}</td>
               <td className="border p-2">{el.email}</td>
               <td className="border p-2">{el.role}</td>
-              <td className="border p-2 p-1">
+              <td className="border p-1">
                 <Link href={`/admin/user/${el.id}`}>Détails</Link>
                 <DeleteButton id={el.id} />
                 <Link href={`/admin/user/${el.id}/edit`}>Éditer</Link>

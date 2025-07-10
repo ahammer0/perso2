@@ -7,7 +7,7 @@ model Project {
   shortDescription String   @db.VarChar(200)
   description      String?  @db.Text
   url              String?
-  slug             String   @db.VarChar(100)
+  slug             String   @unique @db.VarChar(100)
   repoUrl          String?
   technosUsed      Techno[]
   isPublished      Boolean

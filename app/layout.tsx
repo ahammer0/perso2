@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Footer from "@/app/ui/organisms/footer";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -29,8 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-900 text-white`}
       >
-        <div className="grow">{children}</div>
-        <Footer />
+        {children}
       </body>
     </html>
   );

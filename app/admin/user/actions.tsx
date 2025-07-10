@@ -1,7 +1,7 @@
 "use server";
 
 import bcrypt from "bcryptjs";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -17,7 +17,7 @@ export async function deleteUser(id: number) {
   } catch (e) {
     console.error(e);
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
   }
 }
 export async function handleAddUser(formData: FormData) {
@@ -28,11 +28,20 @@ export async function handleAddUser(formData: FormData) {
     password: formData.get("password"),
     role: formData.get("role"),
   };
+  if (
+    !rawFormData.name ||
+    !rawFormData.email ||
+    !rawFormData.password ||
+    !rawFormData.role
+  )
+    throw new Error("All fields are required");
+  if (rawFormData.role !== "user" && rawFormData.role !== "admin")
+    throw new Error("Role must be user or admin");
 
   const prisma = new PrismaClient();
-  let redirectPath: String | null = null;
+  let redirectPath: string = "/admin/user";
   try {
-    const user = {
+    const user: Prisma.UserCreateInput = {
       name: rawFormData.name.toString(),
       email: rawFormData.email.toString(),
       password: await bcrypt.hash(rawFormData.password.toString(), 10),
@@ -45,13 +54,13 @@ export async function handleAddUser(formData: FormData) {
     console.error(e);
     redirectPath = "/admin/user/add";
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
     revalidatePath("/admin/user");
     redirect(redirectPath);
   }
 }
 
-export async function getOneUser(id: Number) {
+export async function getOneUser(id: number) {
   const prisma = new PrismaClient();
   try {
     const user = await prisma.user.findUnique({
@@ -66,25 +75,49 @@ export async function getOneUser(id: Number) {
   } catch (e) {
     console.error(e);
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
   }
 }
 
-export async function editUser(id: Number, userForm: FormData) {
+export async function editUser(id: number, userForm: FormData) {
   const prisma = new PrismaClient();
 
-  const newPassword = userForm.get("password");
-  let redirectPath: String | null = null;
+  let redirectPath = "/admin/user";
+
+  const rawFormData = {
+    name: userForm.get("name"),
+    email: userForm.get("email"),
+    password: userForm.get("password"),
+    role: userForm.get("role"),
+  };
+
+  if (
+    !rawFormData.name ||
+    !rawFormData.email ||
+    !rawFormData.password ||
+    !rawFormData.role
+  )
+    throw new Error("All fields are required");
+  if (typeof rawFormData.name !== "string")
+    throw new Error("Name must be string");
+  if (typeof rawFormData.email !== "string")
+    throw new Error("Email must be string");
+  if (rawFormData.role !== "user" && rawFormData.role !== "admin")
+    throw new Error("Role must be user or admin");
+  if (typeof rawFormData.password !== "string")
+    throw new Error("Password must be string");
 
   try {
-    const userData = {
-      name: userForm.get("name"),
-      email: userForm.get("email"),
-      role: userForm.get("role"),
+    const userData: Prisma.UserUpdateInput = {
+      name: rawFormData.name,
+      email: rawFormData.email,
+      role: rawFormData.role,
       password:
-        newPassword === "" ? undefined : await bcrypt.hash(newPassword, 10),
+        rawFormData.password === ""
+          ? undefined
+          : await bcrypt.hash(rawFormData.password, 10),
     };
-    const updatedUser = await prisma.user.update({
+    await prisma.user.update({
       where: { id: id },
       data: userData,
     });
@@ -93,7 +126,7 @@ export async function editUser(id: Number, userForm: FormData) {
     console.error(e);
     redirectPath = `/admin/user/${id}/edit`;
   } finally {
+    prisma.$disconnect();
     redirect(redirectPath);
-    prisma.$disconnect;
   }
 }

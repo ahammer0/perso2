@@ -7,6 +7,7 @@ const Spinner = ({ className, ...props }: React.HTMLProps<HTMLDivElement>) => {
         "w-full aspect-square border-4 border-transparent border-t-indigo-500 border-b-indigo-500 rounded-full animate-spin",
         className,
       )}
+      {...props}
     ></div>
   );
 };

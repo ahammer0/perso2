@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { Prisma } from "@prisma/client";
+import { Media } from "@prisma/client";
 
 export default function MediaPicker({
   medias,
@@ -10,7 +10,7 @@ export default function MediaPicker({
   required,
 }: {
   name: string;
-  medias: Prisma.MediaGetPayload<{}>[];
+  medias: Media[];
   defaultValue?: number;
   required?: boolean;
 }) {
