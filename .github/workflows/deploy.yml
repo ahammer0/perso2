@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: ".next,public,package.json,package-lock.json,prisma/schema"
+          source: ".next,public,package.json,package-lock.json,prisma/schema,start.js"
           target: ${{ secrets.REMOTE_PATH }}/
 
       - name: SSH - Install deps & restart app
