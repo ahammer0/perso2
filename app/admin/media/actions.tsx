@@ -45,7 +45,7 @@ export async function addMedia(mediaForm: FormData) {
   }
   //convert to buffer
   const arrayBuffer = await file.arrayBuffer();
-  let buffer = Buffer.from(arrayBuffer);
+  let buffer = Buffer.from(new Uint8Array(arrayBuffer));
   //convert to webp and resize
   buffer = await sharp(buffer)
     .resize({
