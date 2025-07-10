@@ -32,7 +32,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: ".next,public,package.json,package-lock.json"
-          target: ${{ secrets.REMOTE_PATH }}
+          target: ${{ secrets.REMOTE_PATH }}/
 
       - name: SSH - Install deps & restart app
         uses: appleboy/ssh-action@v1.0.0
