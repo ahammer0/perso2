@@ -31,22 +31,31 @@ export async function addProject(projectForm: FormData) {
         id: parseInt(projectForm.get("pictureId")?.toString() ?? ""),
       },
     },
-    description: projectForm.get("descritpion")?.toString() ?? "",
+    description: projectForm.get("description")?.toString() ?? "",
+    shortDescription: projectForm.get("shortDescription")?.toString() ?? "",
+    slug: projectForm.get("slug")?.toString() ?? "",
     url: projectForm.get("url")?.toString() ?? "",
     technosUsed: {
       connect: JSON.parse(projectForm.get("technosUsed")?.toString() ?? "[]"),
     },
     isPublished: projectForm.get("isPublished") === "on",
   };
+
   const newProject = await prisma.project.create({
     data: project,
   });
-  prisma.$disconnect;
+  prisma.$disconnect();
   redirect(`/admin/project/${newProject.id}`);
 }
 
-export async function editProject(id: number, projectForm: FormData) {
+export async function editProject(projectForm: FormData) {
   const prisma = new PrismaClient();
+  const id = parseInt(projectForm.get("id")?.toString() ?? "");
+
+  if (!id || isNaN(id)) {
+    throw new Error("id is not a number");
+  }
+
   const project: Prisma.ProjectUpdateInput = {
     name: projectForm.get("name")?.toString() ?? "",
     picture: {
@@ -54,10 +63,12 @@ export async function editProject(id: number, projectForm: FormData) {
         id: parseInt(projectForm.get("pictureId")?.toString() ?? ""),
       },
     },
-    description: projectForm.get("descritpion")?.toString() ?? "",
+    shortDescription: projectForm.get("shortDescription")?.toString() ?? "",
+    description: projectForm.get("description")?.toString() ?? "",
+    slug: projectForm.get("slug")?.toString() ?? "",
     url: projectForm.get("url")?.toString() ?? "",
     technosUsed: {
-      connect: JSON.parse(projectForm.get("technosUsed")?.toString() ?? ""),
+      set: JSON.parse(projectForm.get("technosUsed")?.toString() ?? ""),
     },
     isPublished: projectForm.get("isPublished") === "on",
   };
@@ -65,7 +76,7 @@ export async function editProject(id: number, projectForm: FormData) {
     where: { id: id },
     data: project,
   });
-  prisma.$disconnect;
+  prisma.$disconnect();
   redirect(`/admin/project/${newProject.id}`);
 }
 
@@ -73,5 +84,5 @@ export async function deleteProject(id: number) {
   const prisma = new PrismaClient();
   await prisma.project.delete({ where: { id: id } });
   revalidatePath(`/admin/project`);
-  prisma.$disconnect;
+  prisma.$disconnect();
 }

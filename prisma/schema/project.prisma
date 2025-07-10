@@ -1,11 +1,14 @@
 model Project {
-  id          Int      @id @default(autoincrement())
-  name        String
-  picture     Media    @relation(fields: [pictureId], references: [id])
-  pictureId   Int
-  createdAt   DateTime @default(now())
-  description String   @db.Text
-  url         String?
-  technosUsed Techno[]
-  isPublished Boolean
+  id               Int      @id @default(autoincrement())
+  name             String
+  picture          Media    @relation(fields: [pictureId], references: [id])
+  pictureId        Int
+  createdAt        DateTime @default(now())
+  shortDescription String   @db.VarChar(200)
+  description      String?  @db.Text
+  url              String?
+  slug             String   @unique @db.VarChar(100)
+  repoUrl          String?
+  technosUsed      Techno[]
+  isPublished      Boolean
 }

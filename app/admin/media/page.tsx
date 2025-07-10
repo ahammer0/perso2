@@ -1,48 +1,16 @@
-import { getMedias } from "./actions.tsx";
-import Link from "next/link";
-import Image from "next/image";
-import DeleteButton from './ui/deleteButton.tsx'
+import { getMedias } from "./actions";
+import { H2 } from "@/app/ui/atoms/headers";
+import { Button } from "@/app/ui/atoms/buttons";
+import MediaCards from "@/app/ui/molecules/MediaCards";
 
 export default async function Page() {
   const medias = await getMedias();
   return (
     <>
-      <h2>Page des medias</h2>
-      <Link href="/admin/media/add">Ajouter un média</Link>
+      <H2>Page des medias</H2>
+      <Button href="/admin/media/add">Ajouter un média</Button>
 
-      <table className="border border-collapse">
-        <thead>
-          <tr>
-            <th className="text-left">Id</th>
-            <th className="text-left">Image</th>
-            <th className="text-left">Description</th>
-            <th className="text-left">Type</th>
-            <th className="text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {medias.map((el, id) => (
-            <tr key={`user-${id}`}>
-              <td className="border p-2">{el.id}</td>
-              <td className="border p-2">
-                <Image
-                  src={`/uploads/${el.fileName}`}
-                  alt={el.alt}
-                  width="60"
-                  height="60"
-                />
-              </td>
-              <td className="border p-2">{el.alt}</td>
-              <td className="border p-2">{el.type}</td>
-              <td className="border p-2 p-1">
-                <Link href={`/admin/media/${el.id}`}>Détails</Link>
-                <DeleteButton id={el.id}/>
-                <Link href={`/admin/media/${el.id}/edit`}>Éditer</Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <MediaCards medias={medias} />
     </>
   );
 }

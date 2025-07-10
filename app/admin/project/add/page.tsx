@@ -1,29 +1,52 @@
 import { addProject } from "../actions";
 import MediaPicker from "../../techno/ui/mediaPicker";
-import { getMedias } from "../../media/actions";
 import { getTechnos } from "../../techno/actions";
 import TechnoPicker from "../ui/technoPicker";
+import getProjectMedias from "../../lib/getProjectMedia";
+import { Button } from "@/app/ui/atoms/buttons";
 
 export default async function addForm() {
-  const medias = await getMedias()
-  const technos = await getTechnos()
+  const medias = await getProjectMedias();
+  const technos = await getTechnos();
 
   return (
     <>
-      <form action={addProject} className="flex flex-col text-black">
+      <form action={addProject} className="flex flex-col">
         <div className="flex flex-col">
           <label htmlFor="name">Nom du projet</label>
-          <input type="text" name="name" required/>
+          <input type="text" name="name" required />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="slug">Slug</label>
+          <input
+            type="text"
+            name="slug"
+            required
+            maxLength={100}
+            pattern="/^[a-z][a-z0-9\-]*[a-z]$/"
+          />
+        </div>
+
+        <div className="flex flex-col overflow-x-scroll">
+          <label htmlFor="pictureId">Image du projet</label>
+          <MediaPicker name="pictureId" medias={medias} required />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="pictureId">Image du projet</label>
-          <MediaPicker name="pictureId" medias={medias}/>
+          <label htmlFor="shortDescription">Description courte du projet</label>
+          <textarea
+            name="shortDescription"
+            cols={30}
+            rows={5}
+            maxLength={200}
+            required
+            placeholder="max 200 caractères"
+          ></textarea>
         </div>
 
         <div className="flex flex-col">
           <label htmlFor="description">Description du projet</label>
-          <textarea name="description" cols={30} rows={10} required></textarea>
+          <textarea name="description" cols={30} rows={10}></textarea>
         </div>
 
         <div className="flex flex-col">
@@ -33,14 +56,14 @@ export default async function addForm() {
 
         <div className="flex flex-col">
           <label htmlFor="technosUsed">Technos utilisées</label>
-          <TechnoPicker technos={technos} name="technosUsed"/>
+          <TechnoPicker technos={technos} name="technosUsed" />
         </div>
 
         <div className="flex flex-col">
           <label htmlFor="isPublished">Visible au public</label>
           <input type="checkbox" name="isPublished" />
         </div>
-        <button type="submit">Ajouter le projet</button>
+        <Button type="submit">Ajouter le projet</Button>
       </form>
     </>
   );

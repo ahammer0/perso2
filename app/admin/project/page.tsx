@@ -2,14 +2,16 @@ import { getProjects } from "./actions";
 import Link from "next/link";
 import Image from "next/image";
 import DeleteButton from "./ui/deleteButton";
+import { H2 } from "@/app/ui/atoms/headers";
+import { Button } from "@/app/ui/atoms/buttons";
 
 export default async function Page() {
   const projects = await getProjects();
 
   return (
     <>
-      <h2>Page des projets</h2>
-      <Link href="/admin/project/add">Ajouter un projet</Link>
+      <H2>Page des projets</H2>
+      <Button href="/admin/project/add">Ajouter un projet</Button>
 
       <table className="border border-collapse">
         <thead>

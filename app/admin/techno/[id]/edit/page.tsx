@@ -1,19 +1,18 @@
-import MediaPicker from "../../ui/mediaPicker.tsx";
-import { getMedias } from "@/app/admin/media/actions.tsx";
-import { editTechno,getTechno } from "../../actions.tsx";
+import MediaPicker from "../../ui/mediaPicker";
+import { getMedias } from "@/app/admin/media/actions";
+import { editTechno, getTechno } from "../../actions";
 
-export default async function TechnoAdd(
-  props: {
-    params: Promise<{ id: String }>;
-  }
-) {
+export default async function TechnoAdd(props: {
+  params: Promise<{ id: string }>;
+}) {
   const params = await props.params;
   const medias = await getMedias();
   const techId = parseInt(params.id);
   const techno = await getTechno(techId);
+  if (!techno) throw new Error("Techno not found");
   return (
     <>
-      <h2>édition d'une techno</h2>
+      <h2>édition d&apos;une techno</h2>
       <form
         action={editTechno.bind(null, techId)}
         className="flex flex-col text-black"

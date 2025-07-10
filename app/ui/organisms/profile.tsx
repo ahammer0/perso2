@@ -24,7 +24,7 @@ const Profile = () => {
         </p>
         <div className="flex space-x-4">
           <ButtonOutline href="#projects">View my projects</ButtonOutline>
-          <Button href="#">More about me</Button>
+          <Button href="#aboutMe">More about me</Button>
         </div>
       </div>
     </section>

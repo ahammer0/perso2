@@ -14,7 +14,9 @@ const ContactForm = () => {
   });
   return (
     <section className="p-4 pt-14 pb-0" id="contact">
-      <H2 className="text-white text-center mb-14">Let's get in touch !</H2>
+      <H2 className="text-white text-center mb-14">
+        Let&apos;s get in touch !
+      </H2>
       <form action={action} className="flex flex-col gap-4">
         <Input
           type="email"

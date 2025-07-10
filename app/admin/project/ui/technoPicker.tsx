@@ -13,7 +13,7 @@ export default function TechnoPicker({
   name: string;
 }) {
   const [selected, setSelected] = useState<{ id: number }[]>(
-    JSON.parse(defaultValue)
+    JSON.parse(defaultValue),
   );
   function toggleSelected(id: number) {
     const elid = selected.findIndex((el) => el.id === id);
@@ -30,7 +30,7 @@ export default function TechnoPicker({
 
   return (
     <>
-      <div className="flex flex-row gap-2 m-2">
+      <div className="flex flex-row flex-wrap gap-3 m-2">
         {technos.map((el, id) => (
           <div key={`${id}-${el.name}`}>
             <Image
@@ -39,7 +39,7 @@ export default function TechnoPicker({
               height={100}
               width={100}
               onClick={() => toggleSelected(el.id)}
-              className={`hover:cursor-pointer outline-offset-2 outline-2 outline-purple ${isSelected(el.id) ? "outline" : ""}`}
+              className={`hover:cursor-pointer outline-offset-2 outline-4 outline-purple bg-white rounded ${isSelected(el.id) ? "outline" : ""}`}
             />
             <p className="text-center">{el.name}</p>
           </div>
