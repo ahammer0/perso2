@@ -32,10 +32,22 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets.REMOTE_PATH }}
+
+            echo "Activate nodevenv"
             source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.REMOTE_PATH }}/22/bin/activate
+
+            echo "install-modules"
             /usr/sbin/cloudlinux-selector install-modules --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}
             ~/nodevenv/${{secrets.REMOTE_PATH}}/22/bin/npm i --include=dev
+
+            echo "prisma generate"
             npx prisma generate
+
+            echo "build"
             /usr/sbin/cloudlinux-selector run-script --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }} --script name=build
+
+            echo "prisma deploy"
             npx prisma migrate deploy
+
+            echo "app restart"
             /usr/sbin/cloudlinux-selector restart --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}
