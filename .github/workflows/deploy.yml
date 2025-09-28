@@ -44,7 +44,7 @@ jobs:
             npx prisma generate
 
             echo "build"
-            /usr/sbin/cloudlinux-selector run-script --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }} --script name=build
+            /usr/sbin/cloudlinux-selector run-script --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }} --script-name=build
 
             echo "prisma deploy"
             npx prisma migrate deploy
