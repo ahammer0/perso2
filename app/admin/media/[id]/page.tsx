@@ -17,7 +17,7 @@ export default async function ShowMedia(props: {
     <>
       <p>id reçu :{params.id}</p>
       <Image
-        src={`/uploads/${media.fileName}`}
+        src={`${process.env.NEXT_PUBLIC_IMAGE_HOST}/uploads/${media.fileName}`}
         alt={media.alt}
         height="500"
         width="500"

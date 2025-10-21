@@ -34,7 +34,7 @@ export default function TechnoPicker({
         {technos.map((el, id) => (
           <div key={`${id}-${el.name}`}>
             <Image
-              src={`/uploads/${el.picture.fileName}`}
+              src={`${process.env.NEXT_PUBLIC_IMAGE_HOST}/uploads/${el.picture.fileName}`}
               alt={el.picture.alt}
               height={100}
               width={100}

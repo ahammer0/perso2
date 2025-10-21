@@ -46,7 +46,7 @@ function Card({
         <div className="flex flex-col md:flex-row">
           <Link href={`/projects/${project.slug}`} className="block shrink-0">
             <Image
-              src={`/uploads/${project.picture.fileName}`}
+              src={`${process.env.NEXT_PUBLIC_IMAGE_HOST}/uploads/${project.picture.fileName}`}
               alt={project.picture.alt}
               height={250}
               width={200}

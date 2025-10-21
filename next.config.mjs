@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: process.env.NEXT_PUBLIC_IMAGE_HOST,
+        hostname: new URL(process.env.NEXT_PUBLIC_IMAGE_HOST).hostname,
         pathname: '/uploads/**'
       }
     ]

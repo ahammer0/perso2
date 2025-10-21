@@ -14,7 +14,7 @@ export default async function EditMedia(props: {
     <>
       <p>{techno.name}</p>
       <Image
-        src={`/uploads/${techno.picture.fileName}`}
+        src={`${process.env.NEXT_PUBLIC_IMAGE_HOST}/uploads/${techno.picture.fileName}`}
         alt={techno.picture.alt}
         height="150"
         width="150"

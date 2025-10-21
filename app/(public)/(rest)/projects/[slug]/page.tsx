@@ -41,7 +41,7 @@ export default async function Home({
     <article className="flex flex-col items-center px-4">
       <h2 className="p-4">{project.name}</h2>
       <Image
-        src={`/uploads/${project.picture.fileName}`}
+        src={`${process.env.NEXT_PUBLIC_IMAGE_HOST}/uploads/${project.picture.fileName}`}
         alt={project.picture.alt}
         height={250}
         width={200}

@@ -9,7 +9,7 @@ const MediaCards = ({ medias }: { medias: GetMedia[] }) => {
       {medias.map((el, id) => (
         <li key={`user-${id}`} className="relative">
           <Image
-            src={`/uploads/${el.fileName}`}
+            src={`${process.env.NEXT_PUBLIC_IMAGE_HOST}/uploads/${el.fileName}`}
             alt={el.alt}
             width="60"
             height="60"

@@ -21,7 +21,7 @@ export default function MediaPicker({
       <div className="flex flex-row flex-wrap gap-2 m-2">
         {medias.map((el) => (
           <Image
-            src={`/uploads/${el.fileName}`}
+            src={`${process.env.NEXT_PUBLIC_IMAGE_HOST}/uploads/${el.fileName}`}
             alt={el.alt}
             height="100"
             width="100"

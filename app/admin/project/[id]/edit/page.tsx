@@ -22,7 +22,7 @@ export default async function EditProject(props: {
     <>
       <h2>Édition du projet {project?.name}</h2>
       <Image
-        src={`/uploads/${project?.picture.fileName}`}
+        src={`${process.env.NEXT_PUBLIC_IMAGE_HOST}/uploads/${project?.picture.fileName}`}
         alt={project?.picture.alt ?? ""}
         width={300}
         height={300}

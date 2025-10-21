@@ -27,7 +27,7 @@ export default async function Page() {
               <td className="border p-2">{el.name}</td>
               <td className="border p-2">
                 <Image
-                  src={`/uploads/${el.picture.fileName}`}
+                  src={`${process.env.NEXT_PUBLIC_IMAGE_HOST}/uploads/${el.picture.fileName}`}
                   alt={el.picture.alt}
                   width="60"
                   height="60"
