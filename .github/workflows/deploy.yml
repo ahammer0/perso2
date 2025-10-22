@@ -14,13 +14,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependancies
-        uses: npm ci
+        run: npm ci
 
       - name: Run linter
-        uses: npx next lint
+        run: npx next lint
 
       - name: Run tsc
-        uses: npx tsc --noEmit
+        run: npx tsc --noEmit
 
       - name: SSH - App Stop
         uses: appleboy/ssh-action@v1.0.0
