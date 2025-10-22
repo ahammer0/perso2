@@ -5,7 +5,7 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: new URL(process.env.NEXT_PUBLIC_IMAGE_HOST).hostname,
-        pathname: '/uploads/**'
+        pathname: '/api/uploads/**'
       }
     ]
   }

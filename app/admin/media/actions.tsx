@@ -6,7 +6,9 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { Media } from "@prisma/client";
 
-const uploadsDirPath = process.cwd() + "/public/uploads/";
+const path = process.env.UPLOADS_DIR_PATH
+if (!path) throw new Error("UPLOADS_DIR_PATH envvar unset")
+const uploadsDirPath = process.cwd() + "/" + path;
 
 export async function getMedias() {
   const prisma = new PrismaClient();
