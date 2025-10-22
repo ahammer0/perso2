@@ -7,7 +7,7 @@ if (!path) throw new Error("UPLOADS_DIR_PATH envvar unset")
 const uploadsDirPath = process.cwd() + "/" + pathEnv;
 
 
-export async function GET(req: NextRequest, { params }: { params: { filename: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ filename: string }> }) {
   const awaitedParams = await params;
   const filePath = path.join(uploadsDirPath, awaitedParams.filename);
 

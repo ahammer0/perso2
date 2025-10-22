@@ -15,19 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependancies
-        run: npm i --include=dev
-
-      - name: Run linter
-        run: npx next lint
-
-      - name: debug - Run tsc
-        run: npx tsc --noEmit --listFiles
-
-      - name: Remove node_modules
-        run: rm -rf node_modules/
-
-      - name: SSH - App Stop
+      - name: SSH - App Stop & backup
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -35,12 +23,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            cp -r ${{ secrets.REMOTE_PATH }}/ ${{ secrets.REMOTE_PATH }}-backup/
             cd ${{ secrets.REMOTE_PATH }}
 
             echo "Activate nodevenv"
             source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.REMOTE_PATH }}/22/bin/activate
 
-            echo "app restart"
+            echo "app stop"
             /usr/sbin/cloudlinux-selector stop --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}|
             node -e "
             let input = '';
@@ -64,7 +53,7 @@ jobs:
                     }
             });
             "
-      - name: Upload build to server
+      - name: Upload files to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -217,4 +206,44 @@ jobs:
                             process.exit(1);
                     }
             });
-            "
+      - name: Check app health (curl)
+        run: |
+          for i in {1..5}; do
+            echo "Trying $i..."
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" https:/ahammer.fr/health)
+            if [ "$STATUS" -eq 200 ]; then
+              echo "✅ App OK (HTTP 200)"
+              exit 0
+            fi
+            echo "Waiting app (code: $STATUS)..."
+            sleep 5
+          done
+          echo "❌ App does not respond correctly"
+          exit 1"
+
+      - name: SSH - Rollback on failure
+        if: failure()
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "Rollback..."
+            rm -rf ${{ secrets.REMOTE_PATH }}/
+            cp -r ${{ secrets.REMOTE_PATH }}-backup/ ${{ secrets.REMOTE_PATH }/
+            echo "Restart ols version"
+            /usr/sbin/cloudlinux-selector start --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}
+
+      - name: Cleanup backup
+        if: success()
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "Deleting backup"
+            rm -rf ${{ secrets.REMOTE_PATH }}-backup/
