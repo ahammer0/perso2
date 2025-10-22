@@ -193,6 +193,7 @@ jobs:
                     const res = JSON.parse(input);
                     try{
                             console.log(res);
+                            if(res.data){
                               const decoded = Buffer.from(res.data,'base64').toString();
                               console.log(decoded);
                             }
