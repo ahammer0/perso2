@@ -45,7 +45,7 @@ export default async function EditProject(props: {
             required
             maxLength={100}
             defaultValue={project.slug}
-            pattern="/^[a-z][a-z0-9\-]*[a-z]$/"
+            pattern="[a-z][a-z0-9\-]*[a-z]"
           />
         </div>
 
