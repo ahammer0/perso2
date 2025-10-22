@@ -74,7 +74,7 @@ jobs:
           source: "."
           target: ${{ secrets.REMOTE_PATH }}/
 
-      - name: SSH - Install deps & restart app
+      - name: SSH - Install deps
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -88,8 +88,7 @@ jobs:
             source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.REMOTE_PATH }}/22/bin/activate
 
             echo "install-modules"
-            /usr/sbin/cloudlinux-selector install-modules --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}
-            ~/nodevenv/${{secrets.REMOTE_PATH}}/22/bin/npm i --include=dev |
+            /usr/sbin/cloudlinux-selector install-modules --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}|
             node -e "
             let input = '';
             process.stdin.on('data',ch => input += ch);
@@ -112,6 +111,7 @@ jobs:
                     }
             });
             "
+            ~/nodevenv/${{secrets.REMOTE_PATH}}/22/bin/npm i --include=dev
 
       - name: SSH - Run prisma codegen
         uses: appleboy/ssh-action@v1.0.0
