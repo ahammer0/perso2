@@ -231,8 +231,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             echo "Rollback..."
-            rm -rf ${{ secrets.REMOTE_PATH }}
-            cp -r ${{ secrets.REMOTE_PATH }}-backup/ ${{ secrets.REMOTE_PATH }/
+            rm -rf ${{ secrets.REMOTE_PATH }}/
+            cp -r ${{ secrets.REMOTE_PATH }}-backup/ ${{ secrets.REMOTE_PATH }}/
             echo "Restart ols version"
             /usr/sbin/cloudlinux-selector start --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}
 
@@ -246,4 +246,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             echo "Deleting backup"
-            rm -rf ${{ secrets.REMOTE_PATH }}-backup
+            rm -rf ${{ secrets.REMOTE_PATH }}-backup/
