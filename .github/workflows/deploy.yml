@@ -205,7 +205,8 @@ jobs:
                             console.error('Error parsing jsonobject',e);
                             process.exit(1);
                     }
-            });
+            });"
+
       - name: Check app health (curl)
         run: |
           for i in {1..5}; do
