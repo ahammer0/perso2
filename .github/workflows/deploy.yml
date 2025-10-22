@@ -13,6 +13,50 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install dependancies
+        uses: npm ci
+
+      - name: Run linter
+        uses: npx next lint
+
+      - name: Run tsc
+        uses: npx tsc --noEmit
+
+      - name: SSH - App Stop
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.REMOTE_PATH }}
+
+            echo "Activate nodevenv"
+            source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.REMOTE_PATH }}/22/bin/activate
+
+            echo "app restart"
+            /usr/sbin/cloudlinux-selector stop --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}|
+            node -e "
+            let input = '';
+            process.stdin.on('data',ch => input += ch);
+            process.stdin.on('end',()=>{
+                    const res = JSON.parse(input);
+                    try{
+                            console.log(res);
+                            const decoded = Buffer.from(res.data,'base64').toString();
+                            console.log(decoded);
+                            if('warning' in res || 'error' in res){
+                                    console.error('Error');
+                                    process.exit(1);
+                            }
+                    }
+                    catch (e){
+                            console.error('Error parsing jsonobject',e);
+                            process.exit(1);
+                    }
+            });
+            "
       - name: Upload build to server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -38,16 +82,127 @@ jobs:
 
             echo "install-modules"
             /usr/sbin/cloudlinux-selector install-modules --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}
-            ~/nodevenv/${{secrets.REMOTE_PATH}}/22/bin/npm i --include=dev
+            ~/nodevenv/${{secrets.REMOTE_PATH}}/22/bin/npm i --include=dev |
+            node -e "
+            let input = '';
+            process.stdin.on('data',ch => input += ch);
+            process.stdin.on('end',()=>{
+                    const res = JSON.parse(input);
+                    try{
+                            console.log(res);
+                            const decoded = Buffer.from(res.data,'base64').toString();
+                            console.log(decoded);
+                            if('warning' in res || 'error' in res){
+                                    console.error('Error');
+                                    process.exit(1);
+                            }
+                    }
+                    catch (e){
+                            console.error('Error parsing jsonobject',e);
+                            process.exit(1);
+                    }
+            });
+            "
+
+      - name: SSH - Run prisma codegen
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.REMOTE_PATH }}
+
+            echo "Activate nodevenv"
+            source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.REMOTE_PATH }}/22/bin/activate
 
             echo "prisma generate"
             npx prisma generate
 
+      - name: SSH - Run build
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.REMOTE_PATH }}
+
+            echo "Activate nodevenv"
+            source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.REMOTE_PATH }}/22/bin/activate
             echo "build"
-            /usr/sbin/cloudlinux-selector run-script --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }} --script-name=build
+            /usr/sbin/cloudlinux-selector run-script --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }} --script-name=build |
+            node -e "
+            let input = '';
+            process.stdin.on('data',ch => input += ch);
+            process.stdin.on('end',()=>{
+                    const res = JSON.parse(input);
+                    try{
+                            console.log(res);
+                            const decoded = Buffer.from(res.data,'base64').toString();
+                            console.log(decoded);
+                            if('warning' in res || 'error' in res){
+                                    console.error('Error');
+                                    process.exit(1);
+                            }
+                    }
+                    catch (e){
+                            console.error('Error parsing jsonobject',e);
+                            process.exit(1);
+                    }
+            });
+            "
+
+      - name: SSH - Prisma Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.REMOTE_PATH }}
+
+            echo "Activate nodevenv"
+            source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.REMOTE_PATH }}/22/bin/activate
 
             echo "prisma deploy"
             npx prisma migrate deploy
 
+      - name: SSH - App Start
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.REMOTE_PATH }}
+
+            echo "Activate nodevenv"
+            source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.REMOTE_PATH }}/22/bin/activate
+
             echo "app restart"
-            /usr/sbin/cloudlinux-selector restart --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}
+            /usr/sbin/cloudlinux-selector start --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}|
+            node -e "
+            let input = '';
+            process.stdin.on('data',ch => input += ch);
+            process.stdin.on('end',()=>{
+                    const res = JSON.parse(input);
+                    try{
+                            console.log(res);
+                            const decoded = Buffer.from(res.data,'base64').toString();
+                            console.log(decoded);
+                            if('warning' in res || 'error' in res){
+                                    console.error('Error');
+                                    process.exit(1);
+                            }
+                    }
+                    catch (e){
+                            console.error('Error parsing jsonobject',e);
+                            process.exit(1);
+                    }
+            });
+            "
