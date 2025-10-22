@@ -212,7 +212,7 @@ jobs:
         run: |
           for i in {1..5}; do
             echo "Trying $i..."
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" https:/ahammer.fr/health)
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" https:/ahammer.fr/api/health)
             if [ "$STATUS" -eq 200 ]; then
               echo "✅ App OK (HTTP 200)"
               exit 0
