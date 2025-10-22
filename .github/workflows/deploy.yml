@@ -46,8 +46,10 @@ jobs:
                     const res = JSON.parse(input);
                     try{
                             console.log(res);
-                            const decoded = Buffer.from(res.data,'base64').toString();
-                            console.log(decoded);
+                            if(res.data){
+                              const decoded = Buffer.from(res.data,'base64').toString();
+                              console.log(decoded);
+                            }
                             if('warning' in res || 'error' in res){
                                     console.error('Error');
                                     process.exit(1);
@@ -92,8 +94,10 @@ jobs:
                     const res = JSON.parse(input);
                     try{
                             console.log(res);
-                            const decoded = Buffer.from(res.data,'base64').toString();
-                            console.log(decoded);
+                            if(res.data){
+                              const decoded = Buffer.from(res.data,'base64').toString();
+                              console.log(decoded);
+                            }
                             if('warning' in res || 'error' in res){
                                     console.error('Error');
                                     process.exit(1);
@@ -143,8 +147,10 @@ jobs:
                     const res = JSON.parse(input);
                     try{
                             console.log(res);
-                            const decoded = Buffer.from(res.data,'base64').toString();
-                            console.log(decoded);
+                            if(res.data){
+                              const decoded = Buffer.from(res.data,'base64').toString();
+                              console.log(decoded);
+                            }
                             if('warning' in res || 'error' in res){
                                     console.error('Error');
                                     process.exit(1);
@@ -195,8 +201,9 @@ jobs:
                     const res = JSON.parse(input);
                     try{
                             console.log(res);
-                            const decoded = Buffer.from(res.data,'base64').toString();
-                            console.log(decoded);
+                              const decoded = Buffer.from(res.data,'base64').toString();
+                              console.log(decoded);
+                            }
                             if('warning' in res || 'error' in res){
                                     console.error('Error');
                                     process.exit(1);
