@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependancies
-        run: npm i
+        run: npm i --include=dev
 
       - name: Run linter
         run: npx next lint
