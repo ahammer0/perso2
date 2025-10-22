@@ -24,6 +24,9 @@ jobs:
       - name: Run tsc
         run: npx tsc --noEmit
 
+      - name: Remove node_modules
+        run: rm -rf node_modules/
+
       - name: SSH - App Stop
         uses: appleboy/ssh-action@v1.0.0
         with:
