@@ -8,21 +8,14 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_IMAGE_HOST: "http://localhost:3000/api"
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependancies
-        run: npm ci
-
-      - name: Run linter
-        run: npx next lint
-
-      - name: Run tsc
-        run: npx tsc --noEmit
-
-      - name: SSH - App Stop
+      - name: SSH - App Stop & backup
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -30,12 +23,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            cp -r ${{ secrets.REMOTE_PATH }}/ ${{ secrets.REMOTE_PATH }}-backup/
             cd ${{ secrets.REMOTE_PATH }}
 
             echo "Activate nodevenv"
             source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.REMOTE_PATH }}/22/bin/activate
 
-            echo "app restart"
+            echo "app stop"
             /usr/sbin/cloudlinux-selector stop --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}|
             node -e "
             let input = '';
@@ -44,8 +38,10 @@ jobs:
                     const res = JSON.parse(input);
                     try{
                             console.log(res);
-                            const decoded = Buffer.from(res.data,'base64').toString();
-                            console.log(decoded);
+                            if(res.data){
+                              const decoded = Buffer.from(res.data,'base64').toString();
+                              console.log(decoded);
+                            }
                             if('warning' in res || 'error' in res){
                                     console.error('Error');
                                     process.exit(1);
@@ -57,7 +53,7 @@ jobs:
                     }
             });
             "
-      - name: Upload build to server
+      - name: Upload files to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -67,7 +63,7 @@ jobs:
           source: "."
           target: ${{ secrets.REMOTE_PATH }}/
 
-      - name: SSH - Install deps & restart app
+      - name: SSH - Install deps
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -81,8 +77,7 @@ jobs:
             source /home/${{ secrets.SSH_USERNAME }}/nodevenv/${{ secrets.REMOTE_PATH }}/22/bin/activate
 
             echo "install-modules"
-            /usr/sbin/cloudlinux-selector install-modules --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}
-            ~/nodevenv/${{secrets.REMOTE_PATH}}/22/bin/npm i --include=dev |
+            /usr/sbin/cloudlinux-selector install-modules --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}|
             node -e "
             let input = '';
             process.stdin.on('data',ch => input += ch);
@@ -90,8 +85,10 @@ jobs:
                     const res = JSON.parse(input);
                     try{
                             console.log(res);
-                            const decoded = Buffer.from(res.data,'base64').toString();
-                            console.log(decoded);
+                            if(res.data){
+                              const decoded = Buffer.from(res.data,'base64').toString();
+                              console.log(decoded);
+                            }
                             if('warning' in res || 'error' in res){
                                     console.error('Error');
                                     process.exit(1);
@@ -103,6 +100,7 @@ jobs:
                     }
             });
             "
+            ~/nodevenv/${{secrets.REMOTE_PATH}}/22/bin/npm i --include=dev
 
       - name: SSH - Run prisma codegen
         uses: appleboy/ssh-action@v1.0.0
@@ -141,8 +139,10 @@ jobs:
                     const res = JSON.parse(input);
                     try{
                             console.log(res);
-                            const decoded = Buffer.from(res.data,'base64').toString();
-                            console.log(decoded);
+                            if(res.data){
+                              const decoded = Buffer.from(res.data,'base64').toString();
+                              console.log(decoded);
+                            }
                             if('warning' in res || 'error' in res){
                                     console.error('Error');
                                     process.exit(1);
@@ -193,8 +193,10 @@ jobs:
                     const res = JSON.parse(input);
                     try{
                             console.log(res);
-                            const decoded = Buffer.from(res.data,'base64').toString();
-                            console.log(decoded);
+                            if(res.data){
+                              const decoded = Buffer.from(res.data,'base64').toString();
+                              console.log(decoded);
+                            }
                             if('warning' in res || 'error' in res){
                                     console.error('Error');
                                     process.exit(1);
@@ -204,5 +206,48 @@ jobs:
                             console.error('Error parsing jsonobject',e);
                             process.exit(1);
                     }
-            });
-            "
+            });"
+
+      - name: Check app health (curl)
+        run: |
+          for i in {1..5}; do
+            echo "Trying $i..."
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" https:/ahammer.fr/api/health)
+            if [ "$STATUS" -eq 200 ]; then
+              echo "✅ App OK (HTTP 200)"
+              exit 0
+            fi
+            echo "Waiting app (code: $STATUS)..."
+            sleep 5
+          done
+          echo "❌ App does not respond correctly"
+          exit 1"
+
+      - name: SSH - Rollback on failure
+        if: failure()
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "Rollback..."
+            rm -rf ${{ secrets.REMOTE_PATH }}/
+            cp -r ${{ secrets.REMOTE_PATH }}-backup/ ${{ secrets.REMOTE_PATH }}/
+            rm -rf ${{ secrets.REMOTE_PATH }}-backup/
+
+            echo "Restart ols version"
+            /usr/sbin/cloudlinux-selector start --json --interpreter=nodejs --app-root=/home/${{ secrets.SSH_USERNAME }}/${{ secrets.REMOTE_PATH }}
+
+      - name: Cleanup backup
+        if: success()
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "Deleting backup"
+            rm -rf ${{ secrets.REMOTE_PATH }}-backup/
